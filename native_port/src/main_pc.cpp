@@ -385,17 +385,32 @@ int main(int argc, char** argv) {
             if (pd.clickUpIn > 0 && --pd.clickUpIn == 0)
                 game.mouseUp(static_cast<int>(pd.cx), static_cast<int>(pd.cy));
             if (!inPlay()) {
-                // Virtual cursor: D-pad + both sticks (L1 = slow, R1 = fast).
-                auto ax = [&](int a) {
-                    const float v = pd.axis[a] / 32768.f;
-                    return std::fabs(v) < 0.25f ? 0.f : v;
+                if (pad) {
+                    pd.axis[SDL_CONTROLLER_AXIS_LEFTX] = SDL_GameControllerGetAxis(pad, SDL_CONTROLLER_AXIS_LEFTX);
+                    pd.axis[SDL_CONTROLLER_AXIS_LEFTY] = SDL_GameControllerGetAxis(pad, SDL_CONTROLLER_AXIS_LEFTY);
+                    pd.btn[SDL_CONTROLLER_BUTTON_DPAD_LEFT] = SDL_GameControllerGetButton(pad, SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+                    pd.btn[SDL_CONTROLLER_BUTTON_DPAD_RIGHT] = SDL_GameControllerGetButton(pad, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+                    pd.btn[SDL_CONTROLLER_BUTTON_DPAD_UP] = SDL_GameControllerGetButton(pad, SDL_CONTROLLER_BUTTON_DPAD_UP);
+                    pd.btn[SDL_CONTROLLER_BUTTON_DPAD_DOWN] = SDL_GameControllerGetButton(pad, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+                }
+
+                auto getAxis = [&](int a, float deadzone = 0.32f) {
+                    const float raw = pd.axis[a] / 32768.f;
+                    const float mag = std::fabs(raw);
+                    if (mag <= deadzone) return 0.f;
+                    const float rescaled = (mag - deadzone) / (1.f - deadzone);
+                    return raw > 0.f ? rescaled : -rescaled;
                 };
-                float dx = ax(SDL_CONTROLLER_AXIS_LEFTX) + ax(SDL_CONTROLLER_AXIS_RIGHTX) +
-                           (pd.btn[SDL_CONTROLLER_BUTTON_DPAD_RIGHT] ? 1.f : 0.f) -
-                           (pd.btn[SDL_CONTROLLER_BUTTON_DPAD_LEFT] ? 1.f : 0.f);
-                float dy = ax(SDL_CONTROLLER_AXIS_LEFTY) + ax(SDL_CONTROLLER_AXIS_RIGHTY) +
-                           (pd.btn[SDL_CONTROLLER_BUTTON_DPAD_DOWN] ? 1.f : 0.f) -
-                           (pd.btn[SDL_CONTROLLER_BUTTON_DPAD_UP] ? 1.f : 0.f);
+
+                const float dpadX = (pd.btn[SDL_CONTROLLER_BUTTON_DPAD_RIGHT] ? 1.f : 0.f) -
+                                    (pd.btn[SDL_CONTROLLER_BUTTON_DPAD_LEFT] ? 1.f : 0.f);
+                const float dpadY = (pd.btn[SDL_CONTROLLER_BUTTON_DPAD_DOWN] ? 1.f : 0.f) -
+                                    (pd.btn[SDL_CONTROLLER_BUTTON_DPAD_UP] ? 1.f : 0.f);
+                float stickX = getAxis(SDL_CONTROLLER_AXIS_LEFTX, 0.32f);
+                float stickY = getAxis(SDL_CONTROLLER_AXIS_LEFTY, 0.32f);
+
+                float dx = stickX + dpadX;
+                float dy = stickY + dpadY;
                 dx = std::max(-1.f, std::min(1.f, dx));
                 dy = std::max(-1.f, std::min(1.f, dy));
                 if (dx != 0.f || dy != 0.f) {

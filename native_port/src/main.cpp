@@ -101,6 +101,7 @@ struct Pad {
     int clickUpIn = -1;                       // frames until a synthetic mouse release
     int stickDir = 0;                         // -1 left, 1 right
     bool trig[2] = {false, false};            // L2 / R2 held
+    bool kLeft = false, kRight = false, kUp = false, kDown = false; // keyboard arrow keys
     Pad() {
         for (int& k : sentKey) k = -1;
     }
@@ -223,10 +224,23 @@ int main(int argc, char** argv) {
                             gfx.toggleFullscreen();
                         } else if (e.key.keysym.sym == SDLK_F12) {
                             gfx.saveScreenshot("paladog_screenshot.png");
-                        } else if (!e.key.repeat) {
-                            pd.used = false;
-                            pd.cursor = false;
-                            // Direct key shortcuts for post-battle & transition screens
+                        } else {
+                            if (e.key.keysym.sym == SDLK_LEFT) pd.kLeft = true;
+                            else if (e.key.keysym.sym == SDLK_RIGHT) pd.kRight = true;
+                            else if (e.key.keysym.sym == SDLK_UP) pd.kUp = true;
+                            else if (e.key.keysym.sym == SDLK_DOWN) pd.kDown = true;
+
+                            if (!e.key.repeat) {
+                                const bool isArrow = (e.key.keysym.sym == SDLK_LEFT || e.key.keysym.sym == SDLK_RIGHT ||
+                                                      e.key.keysym.sym == SDLK_UP || e.key.keysym.sym == SDLK_DOWN);
+                                if (inPlay() || !isArrow) {
+                                    pd.used = false;
+                                    pd.cursor = false;
+                                } else {
+                                    pd.cursor = true;
+                                    pd.used = true;
+                                }
+                                // Direct key shortcuts for post-battle & transition screens
                             if (game.nMainState == kDrawing::MAIN_GAME && game.nGameState == kDrawing::GAME_CLEAR) {
                                 if (e.key.keysym.sym == SDLK_RETURN || e.key.keysym.sym == SDLK_SPACE ||
                                     e.key.keysym.sym == SDLK_a || e.key.keysym.sym == SDLK_z || e.key.keysym.sym == SDLK_j) {
@@ -368,8 +382,13 @@ int main(int argc, char** argv) {
                             const int k = flashKeyCode(e.key.keysym.sym);
                             if (k >= 0) game.keyDown(k);
                         }
-                        break;
+                    }
+                    break;
                     case SDL_KEYUP: {
+                        if (e.key.keysym.sym == SDLK_LEFT) pd.kLeft = false;
+                        else if (e.key.keysym.sym == SDLK_RIGHT) pd.kRight = false;
+                        else if (e.key.keysym.sym == SDLK_UP) pd.kUp = false;
+                        else if (e.key.keysym.sym == SDLK_DOWN) pd.kDown = false;
                         const int k = flashKeyCode(e.key.keysym.sym);
                         if (k >= 0) game.keyUp(k);
                         break;
@@ -942,19 +961,43 @@ int main(int argc, char** argv) {
             if (pd.clickUpIn > 0 && --pd.clickUpIn == 0)
                 game.mouseUp(static_cast<int>(pd.cx), static_cast<int>(pd.cy));
             if (!inPlay()) {
-                // Virtual cursor: D-pad + both sticks (L1 = slow, R1 = fast).
-                auto ax = [&](int a) {
-                    const float v = pd.axis[a] / 32768.f;
-                    return std::fabs(v) < 0.25f ? 0.f : v;
+                // If a real controller is open, poll hardware axes and D-pad directly to prevent missed release events.
+                if (pad) {
+                    pd.axis[SDL_CONTROLLER_AXIS_LEFTX] = SDL_GameControllerGetAxis(pad, SDL_CONTROLLER_AXIS_LEFTX);
+                    pd.axis[SDL_CONTROLLER_AXIS_LEFTY] = SDL_GameControllerGetAxis(pad, SDL_CONTROLLER_AXIS_LEFTY);
+                    pd.btn[SDL_CONTROLLER_BUTTON_DPAD_LEFT] = SDL_GameControllerGetButton(pad, SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+                    pd.btn[SDL_CONTROLLER_BUTTON_DPAD_RIGHT] = SDL_GameControllerGetButton(pad, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+                    pd.btn[SDL_CONTROLLER_BUTTON_DPAD_UP] = SDL_GameControllerGetButton(pad, SDL_CONTROLLER_BUTTON_DPAD_UP);
+                    pd.btn[SDL_CONTROLLER_BUTTON_DPAD_DOWN] = SDL_GameControllerGetButton(pad, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+                }
+
+                // Proper deadzone with normalized smooth rescaling.
+                // 0.32f deadzone thoroughly eliminates R36S Joy-Con resting drift and prevents the cursor from sticking.
+                auto getAxis = [&](int a, float deadzone) {
+                    const float raw = pd.axis[a] / 32768.f;
+                    const float mag = std::fabs(raw);
+                    if (mag <= deadzone) return 0.f;
+                    const float rescaled = (mag - deadzone) / (1.f - deadzone);
+                    return raw > 0.f ? rescaled : -rescaled;
                 };
+
                 const bool dpadNav = (game.nMainState == kDrawing::MAIN_GAME && game.nGameState == kDrawing::GAME_LEVELUP) ||
                                      (game.nMainState == kDrawing::MAIN_STAGESELECT && game.nMainScene == 200);
                 const float dpadX = dpadNav ? 0.f : ((pd.btn[SDL_CONTROLLER_BUTTON_DPAD_RIGHT] ? 1.f : 0.f) -
                                                      (pd.btn[SDL_CONTROLLER_BUTTON_DPAD_LEFT] ? 1.f : 0.f));
                 const float dpadY = dpadNav ? 0.f : ((pd.btn[SDL_CONTROLLER_BUTTON_DPAD_DOWN] ? 1.f : 0.f) -
                                                      (pd.btn[SDL_CONTROLLER_BUTTON_DPAD_UP] ? 1.f : 0.f));
-                float dx = ax(SDL_CONTROLLER_AXIS_LEFTX) + ax(SDL_CONTROLLER_AXIS_RIGHTX) + dpadX;
-                float dy = ax(SDL_CONTROLLER_AXIS_LEFTY) + ax(SDL_CONTROLLER_AXIS_RIGHTY) + dpadY;
+
+                // Left analog stick is the primary cursor stick
+                float stickX = getAxis(SDL_CONTROLLER_AXIS_LEFTX, 0.32f);
+                float stickY = getAxis(SDL_CONTROLLER_AXIS_LEFTY, 0.32f);
+
+                // Keyboard arrow keys (for PC navigation)
+                const float keyX = (pd.kRight ? 1.f : 0.f) - (pd.kLeft ? 1.f : 0.f);
+                const float keyY = (pd.kDown ? 1.f : 0.f) - (pd.kUp ? 1.f : 0.f);
+
+                float dx = stickX + dpadX + keyX;
+                float dy = stickY + dpadY + keyY;
                 dx = std::max(-1.f, std::min(1.f, dx));
                 dy = std::max(-1.f, std::min(1.f, dy));
                 if (dx != 0.f || dy != 0.f) {

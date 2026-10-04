@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paladog Atlas & Sprite Studio (R36S & PC)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'GameFont';
+      src: url('/fonts/BeVietnamPro-Bold.ttf') format('truetype');
+      font-weight: bold;
+      font-style: normal;
+    }
+
+    :root {
+      --bg-main: #0a0e17;
+      --bg-panel: #131a29;
+      --bg-panel-hover: #1c263b;
+      --bg-card: #182234;
+      --bg-input: #0f1624;
+      --border-color: #24324a;
+      --border-focus: #00e5ff;
+      --cyan: #00e5ff;
+      --cyan-glow: rgba(0, 229, 255, 0.25);
+      --gold: #ffea00;
+      --gold-glow: rgba(255, 234, 0, 0.3);
+      --green: #10b981;
+      --red: #ef4444;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* Checkerboard for transparent pngs */
+    .checkerboard {
+      background-color: #1e293b;
+      background-image: 
+        linear-gradient(45deg, #162030 25%, transparent 25%), 
+        linear-gradient(-45deg, #162030 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, #162030 75%), 
+        linear-gradient(-45deg, transparent 75%, #162030 75%);
+      background-size: 16px 16px;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+    }
+
+    /* Header */
+    header {
+      height: 64px;
+      background: rgba(19, 26, 41, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #ffea00, #ff8800);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #1a0a00;
+      font-size: 20px;
+      box-shadow: 0 0 16px rgba(255, 234, 0, 0.4);
+    }
+
+    .brand h1 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand span {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      background: rgba(0, 229, 255, 0.15);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid transparent;
+      outline: none;
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-main);
+      border-color: var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-panel-hover);
+      border-color: var(--text-dim);
+    }
+
+    .btn-cyan {
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(0, 229, 255, 0.05));
+      color: var(--cyan);
+      border-color: rgba(0, 229, 255, 0.4);
+    }
+
+    .btn-cyan:hover {
+      background: rgba(0, 229, 255, 0.3);
+      box-shadow: 0 0 15px var(--cyan-glow);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #ffea00, #ffb700);
+      color: #1a1000;
+      box-shadow: 0 0 15px var(--gold-glow);
+    }
+
+    .btn-gold:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.25);
+    }
+
+    /* Workspace */
+    .workspace {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Sidebar */
+    aside {
+      width: 340px;
+      background: var(--bg-panel);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .aside-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 8px 12px 8px 36px;
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 2px var(--cyan-glow);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .filter-btn {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--cyan);
+      color: #000;
+      border-color: var(--cyan);
+    }
+
+    .atlas-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .atlas-item {
+      padding: 12px 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .atlas-item:hover {
+      background: var(--bg-panel-hover);
+      border-color: var(--cyan);
+    }
+
+    .atlas-item.active {
+      background: rgba(0, 229, 255, 0.1);
+      border-color: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan-glow);
+    }
+
+    .atlas-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .atlas-num {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--cyan);
+      background: rgba(0, 229, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .atlas-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+      margin-left: 8px;
+    }
+
+    .atlas-sub-count {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .atlas-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Main View */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-main);
+      overflow: hidden;
+    }
+
+    .main-header {
+      padding: 16px 24px;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .main-title h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .main-title p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .main-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toggle-group {
+      display: flex;
+      align-items: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 2px;
+    }
+
+    .toggle-group label {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.15s;
+    }
+
+    .toggle-group input[type="radio"] {
+      display: none;
+    }
+
+    .toggle-group input[type="radio"]:checked + label {
+      background: var(--cyan);
+      color: #000;
+      font-weight: 600;
+    }
+
+    .content-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+    }
+
+    /* Sprite Grid */
+    .sprites-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .sprite-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .sprite-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--cyan);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .sprite-card-header {
+      padding: 10px 14px;
+      background: rgba(19, 26, 41, 0.6);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sprite-idx {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .sprite-dim {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-family: monospace;
+    }
+
+    .sprite-preview {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .sprite-preview img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      transition: transform 0.2s;
+    }
+
+    .sprite-card:hover .sprite-preview img {
+      transform: scale(1.05);
+    }
+
+    .sprite-card-footer {
+      padding: 8px 12px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: 6px;
+      background: rgba(19, 26, 41, 0.4);
+    }
+
+    .sprite-card-footer button {
+      flex: 1;
+      padding: 6px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* Modal Studio Editor */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .editor-modal {
+      width: 1000px;
+      max-width: 95vw;
+      max-height: 92vh;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px var(--cyan-glow);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(24, 34, 52, 0.6);
+    }
+
+    .modal-header h3 {
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 22px;
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+
+    .close-btn:hover {
+      color: #fff;
+    }
+
+    .modal-body {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    /* Comparison row */
+    .compare-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .compare-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .compare-header {
+      padding: 8px 14px;
+      background: rgba(19, 26, 41, 0.6);
+      border-bottom: 1px solid var(--border-color);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .compare-img-wrap {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
+
+    .compare-img-wrap img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      image-rendering: pixelated;
+    }
+
+    /* Canvas Drawing Studio */
+    .canvas-studio {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .studio-toolbar {
+      padding: 10px 14px;
+      background: rgba(19, 26, 41, 0.7);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .tool-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tool-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.15s;
+    }
+
+    .tool-btn.active, .tool-btn:hover {
+      background: var(--cyan);
+      color: #000;
+      border-color: var(--cyan);
+    }
+
+    .color-input {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .slider-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .slider-group input[type="range"] {
+      width: 80px;
+    }
+
+    /* Text tool bar */
+    .text-tool-row {
+      padding: 8px 14px;
+      background: rgba(15, 22, 36, 0.7);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .text-tool-row input[type="text"] {
+      flex: 1;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 6px 12px;
+      color: #fff;
+      font-size: 13px;
+    }
+
+    .canvas-viewport {
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: auto;
+      padding: 20px;
+    }
+
+    canvas {
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+      image-rendering: pixelated;
+      cursor: crosshair;
+    }
+
+    /* Drop Zone */
+    .drop-zone {
+      border: 2px dashed var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: rgba(19, 26, 41, 0.4);
+    }
+
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: var(--cyan);
+      background: rgba(0, 229, 255, 0.05);
+    }
+
+    .drop-zone p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .drop-zone strong {
+      color: var(--cyan);
+    }
+
+    /* Modal Footer */
+    .modal-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(24, 34, 52, 0.6);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 12px 20px;
+      background: var(--bg-panel);
+      border: 1px solid var(--cyan);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px var(--cyan-glow);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 9999;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Console Drawer */
+    .console-drawer {
+      height: 180px;
+      background: #06090e;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: height 0.2s;
+    }
+
+    .console-drawer.collapsed {
+      height: 32px;
+    }
+
+    .console-header {
+      height: 32px;
+      background: #0f1624;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 16px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-dim);
+      cursor: pointer;
+    }
+
+    .console-log {
+      flex: 1;
+      padding: 10px 16px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 12px;
+      color: #38bdf8;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">⚔</div>
+      <div>
+        <h1>PALADOG ATLAS STUDIO</h1>
+      </div>
+      <span>R36S Handheld & PC</span>
+    </div>
+
+    <div class="header-actions">
+      <button id="btnRunGame" class="btn btn-gold" title="Chạy paladog.exe để kiểm tra game trực tiếp">
+        ▶ Chạy thử Game (PC)
+      </button>
+      <button id="btnBuildWin" class="btn btn-cyan" title="Biên dịch lại paladog.exe">
+        ⚡ Biên dịch Windows
+      </button>
+      <button id="btnBuildR36s" class="btn btn-secondary" title="Đóng gói Paladog_VN_R36S.zip cho máy R36S">
+        📦 Đóng gói R36S (.zip)
+      </button>
+    </div>
+  </header>
+
+  <!-- Workspace -->
+  <div class="workspace">
+
+    <!-- Sidebar: Atlas Explorer -->
+    <aside>
+      <div class="aside-header">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="atlasSearch" placeholder="Tìm theo tên hoặc số (143, 133, hud)...">
+        </div>
+        <div class="filter-tabs">
+          <button class="filter-btn active" data-filter="all">Tất cả</button>
+          <button class="filter-btn" data-filter="tutorials">Hướng dẫn</button>
+          <button class="filter-btn" data-filter="hud">Giao diện HUD</button>
+          <button class="filter-btn" data-filter="menu">Menu & Nút</button>
+        </div>
+      </div>
+
+      <div class="atlas-list" id="atlasList">
+        <!-- Atlas items loaded via JS -->
+      </div>
+    </aside>
+
+    <!-- Main View -->
+    <main>
+      <div class="main-header">
+        <div class="main-title">
+          <h2 id="currentAtlasTitle">Chọn một Atlas để bắt đầu</h2>
+          <p id="currentAtlasDesc">Tải toàn bộ sub-sprite và trực tiếp chỉnh sửa hoặc thay thế bằng ảnh mới.</p>
+        </div>
+
+        <div class="main-actions">
+          <div class="toggle-group" id="versionToggle" style="display: none;">
+            <input type="radio" id="verHandheld" name="ver" value="1" checked>
+            <label for="verHandheld">Bản Handheld (R36S)</label>
+            <input type="radio" id="verNormal" name="ver" value="0">
+            <label for="verNormal">Bản Gốc PC</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-area">
+        <div class="sprites-grid" id="spritesGrid">
+          <!-- Sprite cards loaded here -->
+        </div>
+      </div>
+
+      <!-- Console Drawer -->
+      <div class="console-drawer collapsed" id="consoleDrawer">
+        <div class="console-header" id="consoleToggle">
+          <span>CONSOLE LOGS & SYSTEM OUTPUT</span>
+          <span id="consoleArrow">▲ Mở rộng</span>
+        </div>
+        <div class="console-log" id="consoleLog">Sẵn sàng. Chọn sprite bất kỳ để chỉnh sửa hoặc kéo thả ảnh thay thế.</div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Detailed Sprite Editor Modal -->
+  <div class="modal-overlay" id="editorModal">
+    <div class="editor-modal">
+      <div class="modal-header">
+        <h3 id="modalTitle">Chỉnh Sửa Sprite</h3>
+        <button class="close-btn" id="modalClose">✕</button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Comparison Row -->
+        <div class="compare-row">
+          <div class="compare-box">
+            <div class="compare-header">
+              <span>BẢN GỐC NGUYÊN BẢN (Flash)</span>
+              <button class="btn btn-secondary" style="padding: 2px 8px; font-size: 11px;" id="btnDownloadOrig">
+                ⬇ Tải PNG Gốc
+              </button>
+            </div>
+            <div class="compare-img-wrap checkerboard">
+              <img id="imgOrigPreview" src="" alt="Original Sprite">
+            </div>
+          </div>
+
+          <div class="compare-box">
+            <div class="compare-header">
+              <span>BẢN HIỆN TẠI TRONG GAME</span>
+              <button class="btn btn-secondary" style="padding: 2px 8px; font-size: 11px;" id="btnDownloadCurrent">
+                ⬇ Tải PNG Hiện Tại
+              </button>
+            </div>
+            <div class="compare-img-wrap checkerboard">
+              <img id="imgCurrentPreview" src="" alt="Current Sprite">
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas Studio Editor -->
+        <div class="canvas-studio">
+          <div class="studio-toolbar">
+            <div class="tool-group">
+              <button class="tool-btn active" data-tool="brush" title="Cọ vẽ">🖌</button>
+              <button class="tool-btn" data-tool="eraser" title="Tẩy trong suốt">🧹</button>
+              <button class="tool-btn" data-tool="fillrect" title="Tô mảng màu hình chữ nhật (Inpaint)">⬛</button>
+              <button class="tool-btn" data-tool="text" title="Chèn chữ Tiếng Việt">T</button>
+            </div>
+
+            <div class="tool-group">
+              <input type="color" id="primaryColor" class="color-input" value="#ffea00" title="Màu chính / Màu chữ">
+              <input type="color" id="strokeColor" class="color-input" value="#1a0a00" title="Màu viền chữ">
+            </div>
+
+            <div class="slider-group">
+              <span>Nét:</span>
+              <input type="range" id="brushSize" min="1" max="40" value="4">
+              <span id="brushSizeVal">4px</span>
+            </div>
+
+            <div class="slider-group">
+              <span>Zoom:</span>
+              <input type="range" id="zoomLevel" min="1" max="8" value="2" step="0.5">
+              <span id="zoomVal">2x</span>
+            </div>
+
+            <div class="tool-group" style="margin-left: auto;">
+              <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 12px;" id="btnUndo">↶ Hoàn tác</button>
+              <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 12px;" id="btnResetCanvas">🔄 Nạp lại ảnh hiện tại</button>
+            </div>
+          </div>
+
+          <!-- Text Options (shown when Text tool is active) -->
+          <div class="text-tool-row" id="textToolRow" style="display: none;">
+            <input type="text" id="canvasTextInput" placeholder="Nhập chữ Tiếng Việt (gõ xong bấm vào vị trí trên ảnh để chèn)...">
+            <div class="slider-group">
+              <span>Cỡ chữ:</span>
+              <input type="range" id="fontSizeSlider" min="10" max="60" value="20">
+              <span id="fontSizeVal">20px</span>
+            </div>
+            <div class="slider-group">
+              <span>Viền:</span>
+              <input type="range" id="borderWidthSlider" min="0" max="6" value="2">
+              <span id="borderWidthVal">2px</span>
+            </div>
+          </div>
+
+          <!-- Canvas Viewport -->
+          <div class="canvas-viewport checkerboard" id="canvasViewport">
+            <canvas id="editorCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Drag & Drop Zone -->
+        <div class="drop-zone" id="dropZone">
+          <p>Kéo thả ảnh <strong>PNG mới</strong> vào đây, hoặc <strong>Ctrl + V</strong> dán từ Clipboard để thay thế hoàn toàn sprite này.</p>
+          <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp" style="display: none;">
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-danger" id="btnRestoreOrig" title="Khôi phục lại hoàn toàn theo ảnh gốc ban đầu">
+          ↺ Khôi phục về bản gốc ban đầu
+        </button>
+
+        <div style="display: flex; gap: 10px;">
+          <button class="btn btn-secondary" id="btnCancelEdit">Hủy</button>
+          <button class="btn btn-gold" id="btnSaveSprite" style="font-size: 14px; padding: 10px 24px;">
+            💾 LƯU TRỰC TIẾP VÀO GAME
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">Thông báo</div>
+
+  <script>
+    // State
+    let atlases = [];
+    let currentAtlas = null;
+    let currentSubIdx = null;
+    let currentSubData = null;
+    let currentTool = 'brush';
+    let undoStack = [];
+
+    // Canvas state
+    const canvas = document.getElementById('editorCanvas');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    let isDrawing = false;
+    let startX = 0, startY = 0;
+    let zoom = 2;
+
+    // Elements
+    const atlasListEl = document.getElementById('atlasList');
+    const spritesGridEl = document.getElementById('spritesGrid');
+    const atlasSearch = document.getElementById('atlasSearch');
+    const editorModal = document.getElementById('editorModal');
+    const consoleDrawer = document.getElementById('consoleDrawer');
+    const consoleLog = document.getElementById('consoleLog');
+
+    // Init
+    async function init() {
+      setupEventListeners();
+      await loadAtlases();
+      // Select fdat_143 by default (Battle HUD) or 133
+      selectAtlas(143);
+    }
+
+    async function loadAtlases() {
+      try {
+        const res = await fetch('/api/atlases');
+        atlases = await res.json();
+        renderAtlasList(atlases);
+      } catch (e) {
+        logConsole('Lỗi tải danh sách atlas: ' + e.message);
+      }
+    }
+
+    function renderAtlasList(items) {
+      atlasListEl.innerHTML = '';
+      items.forEach(a => {
+        const item = document.createElement('div');
+        item.className = `atlas-item ${currentAtlas && currentAtlas.num === a.num ? 'active' : ''}`;
+        item.innerHTML = `
+          <div class="atlas-title-row">
+            <span class="atlas-num">#${a.num}</span>
+            <span class="atlas-name" title="${a.name}">${a.name}</span>
+            <span class="atlas-sub-count">${a.sub_count} sprites</span>
+          </div>
+          <div class="atlas-desc">${a.desc}</div>
+        `;
+        item.onclick = () => selectAtlas(a.num);
+        atlasListEl.appendChild(item);
+      });
+    }
+
+    async function selectAtlas(num) {
+      try {
+        const res = await fetch(`/api/atlas/${num}`);
+        currentAtlas = await res.json();
+        
+        document.getElementById('currentAtlasTitle').textContent = `Atlas #${currentAtlas.num}: ${currentAtlas.name}`;
+        document.getElementById('currentAtlasDesc').textContent = `${currentAtlas.desc} | Kích thước: ${currentAtlas.width}x${currentAtlas.height}px | ${currentAtlas.subs.length} sub-sprites`;
+        
+        const toggle = document.getElementById('versionToggle');
+        toggle.style.display = currentAtlas.has_handheld ? 'flex' : 'none';
+
+        // Update active class in sidebar
+        document.querySelectorAll('.atlas-item').forEach(el => {
+          el.classList.toggle('active', el.querySelector('.atlas-num').textContent === `#${num}`);
+        });
+
+        renderSpritesGrid(currentAtlas.subs);
+      } catch (e) {
+        logConsole('Lỗi chọn atlas: ' + e.message);
+      }
+    }
+
+    function renderSpritesGrid(subs) {
+      spritesGridEl.innerHTML = '';
+      const useHandheld = document.querySelector('input[name="ver"]:checked')?.value || '1';
+
+      subs.forEach(s => {
+        const card = document.createElement('div');
+        card.className = 'sprite-card';
+        const imgUrl = `/api/sprite/${currentAtlas.num}/${s.idx}/current.png?handheld=${useHandheld}&t=${Date.now()}`;
+        
+        card.innerHTML = `
+          <div class="sprite-card-header">
+            <span class="sprite-idx">Sprite #${s.idx}</span>
+            <span class="sprite-dim">${s.w} × ${s.h} px</span>
+          </div>
+          <div class="sprite-preview checkerboard" title="Bấm để mở trình chỉnh sửa">
+            <img src="${imgUrl}" alt="Sprite ${s.idx}" loading="lazy">
+          </div>
+          <div class="sprite-card-footer">
+            <button class="btn btn-cyan btn-edit-sprite">✏ Chỉnh Sửa</button>
+            <button class="btn btn-secondary btn-quick-dl" title="Tải PNG về máy">⬇ Tải</button>
+          </div>
+        `;
+
+        card.querySelector('.sprite-preview').onclick = () => openEditor(s.idx);
+        card.querySelector('.btn-edit-sprite').onclick = () => openEditor(s.idx);
+        card.querySelector('.btn-quick-dl').onclick = (e) => {
+          e.stopPropagation();
+          downloadUrl(imgUrl, `fdat_${currentAtlas.num}_sprite_${s.idx}.png`);
+        };
+
+        spritesGridEl.appendChild(card);
+      });
+    }
+
+    // Modal Studio Editor
+    async function openEditor(subIdx) {
+      currentSubIdx = subIdx;
+      currentSubData = currentAtlas.subs[subIdx];
+      const useHandheld = document.querySelector('input[name="ver"]:checked')?.value || '1';
+
+      document.getElementById('modalTitle').textContent = `Chỉnh Sửa Sprite #${subIdx} (${currentSubData.w} × ${currentSubData.h}px) - Atlas #${currentAtlas.num}`;
+
+      // Set comparison images
+      const origUrl = `/api/sprite/${currentAtlas.num}/${subIdx}/orig.png?t=${Date.now()}`;
+      const currentUrl = `/api/sprite/${currentAtlas.num}/${subIdx}/current.png?handheld=${useHandheld}&t=${Date.now()}`;
+
+      document.getElementById('imgOrigPreview').src = origUrl;
+      document.getElementById('imgCurrentPreview').src = currentUrl;
+
+      // Setup Canvas
+      canvas.width = currentSubData.w;
+      canvas.height = currentSubData.h;
+      setZoom(zoom);
+
+      // Load image into canvas
+      await loadToCanvas(currentUrl);
+
+      editorModal.classList.add('open');
+    }
+
+    function setZoom(z) {
+      zoom = z;
+      document.getElementById('zoomVal').textContent = `${z}x`;
+      document.getElementById('zoomLevel').value = z;
+      canvas.style.width = `${currentSubData.w * zoom}px`;
+      canvas.style.height = `${currentSubData.h * zoom}px`;
+    }
+
+    function loadToCanvas(src) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0);
+          saveUndo();
+          resolve();
+        };
+        img.src = src;
+      });
+    }
+
+    function saveUndo() {
+      if (undoStack.length > 20) undoStack.shift();
+      undoStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+    }
+
+    function doUndo() {
+      if (undoStack.length > 1) {
+        undoStack.pop();
+        const prev = undoStack[undoStack.length - 1];
+        ctx.putImageData(prev, 0, 0);
+      }
+    }
+
+    // Canvas Interactions
+    function getCanvasCoords(e) {
+      const rect = canvas.getBoundingClientRect();
+      const x = Math.floor((e.clientX - rect.left) / zoom);
+      const y = Math.floor((e.clientY - rect.top) / zoom);
+      return { x: Math.max(0, Math.min(canvas.width - 1, x)), y: Math.max(0, Math.min(canvas.height - 1, y)) };
+    }
+
+    canvas.addEventListener('mousedown', (e) => {
+      const { x, y } = getCanvasCoords(e);
+      isDrawing = true;
+      startX = x;
+      startY = y;
+
+      if (currentTool === 'brush') {
+        ctx.fillStyle = document.getElementById('primaryColor').value;
+        const size = parseInt(document.getElementById('brushSize').value);
+        ctx.beginPath();
+        ctx.arc(x, y, size / 2, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (currentTool === 'eraser') {
+        const size = parseInt(document.getElementById('brushSize').value);
+        ctx.clearRect(x - size / 2, y - size / 2, size, size);
+      } else if (currentTool === 'text') {
+        drawTextOnCanvas(x, y);
+      }
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDrawing) return;
+      const { x, y } = getCanvasCoords(e);
+
+      if (currentTool === 'brush') {
+        ctx.fillStyle = document.getElementById('primaryColor').value;
+        const size = parseInt(document.getElementById('brushSize').value);
+        ctx.beginPath();
+        ctx.arc(x, y, size / 2, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (currentTool === 'eraser') {
+        const size = parseInt(document.getElementById('brushSize').value);
+        ctx.clearRect(x - size / 2, y - size / 2, size, size);
+      }
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (!isDrawing) return;
+      isDrawing = false;
+      const { x, y } = getCanvasCoords(e);
+
+      if (currentTool === 'fillrect') {
+        ctx.fillStyle = document.getElementById('primaryColor').value;
+        const rx = Math.min(startX, x);
+        const ry = Math.min(startY, y);
+        const rw = Math.abs(x - startX);
+        const rh = Math.abs(y - startY);
+        ctx.fillRect(rx, ry, rw, rh);
+      }
+
+      saveUndo();
+    });
+
+    function drawTextOnCanvas(x, y) {
+      const text = document.getElementById('canvasTextInput').value;
+      if (!text) {
+        showToast('Vui lòng nhập nội dung chữ vào ô bên trên!');
+        document.getElementById('canvasTextInput').focus();
+        return;
+      }
+      const size = parseInt(document.getElementById('fontSizeSlider').value);
+      const strokeW = parseInt(document.getElementById('borderWidthSlider').value);
+      const fillCol = document.getElementById('primaryColor').value;
+      const strokeCol = document.getElementById('strokeColor').value;
+
+      ctx.font = `bold ${size}px 'GameFont', 'Be Vietnam Pro', sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      if (strokeW > 0) {
+        ctx.strokeStyle = strokeCol;
+        ctx.lineWidth = strokeW * 2;
+        ctx.lineJoin = 'round';
+        ctx.strokeText(text, x, y);
+      }
+
+      ctx.fillStyle = fillCol;
+      ctx.fillText(text, x, y);
+      saveUndo();
+    }
+
+    // Save Sprite
+    async function saveCurrentSprite() {
+      const b64 = canvas.toDataURL('image/png');
+      try {
+        const res = await fetch(`/api/sprite/${currentAtlas.num}/${currentSubIdx}/save`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image_base64: b64 })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast(`✔ ${data.message}`);
+          logConsole(`Đã lưu Sprite ${currentSubIdx} vào Atlas ${currentAtlas.num}`);
+          // Update previews
+          selectAtlas(currentAtlas.num);
+          editorModal.classList.remove('open');
+        } else {
+          showToast('Lỗi: ' + data.error);
+        }
+      } catch (e) {
+        showToast('Lỗi kết nối khi lưu: ' + e.message);
+      }
+    }
+
+    // Restore Original
+    async function restoreOriginal() {
+      if (!confirm(`Bạn có chắc muốn khôi phục Sprite #${currentSubIdx} về nguyên bản từ Flash không?`)) return;
+      try {
+        const res = await fetch(`/api/sprite/${currentAtlas.num}/${currentSubIdx}/restore_orig`, {
+          method: 'POST'
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast(`✔ ${data.message}`);
+          logConsole(data.message);
+          openEditor(currentSubIdx);
+          selectAtlas(currentAtlas.num);
+        }
+      } catch (e) {
+        showToast('Lỗi khôi phục: ' + e.message);
+      }
+    }
+
+    // File Drag & Drop & Clipboard
+    function setupDropAndPaste() {
+      const dropZone = document.getElementById('dropZone');
+      const fileInput = document.getElementById('fileInput');
+
+      dropZone.onclick = () => fileInput.click();
+
+      fileInput.onchange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+          handleFile(e.target.files[0]);
+        }
+      };
+
+      dropZone.ondragover = (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+      };
+      dropZone.ondragleave = () => dropZone.classList.remove('dragover');
+      dropZone.ondrop = (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+          handleFile(e.dataTransfer.files[0]);
+        }
+      };
+
+      // Clipboard Paste (Ctrl+V)
+      window.addEventListener('paste', (e) => {
+        if (!editorModal.classList.contains('open')) return;
+        if (e.clipboardData && e.clipboardData.items) {
+          for (let item of e.clipboardData.items) {
+            if (item.type.indexOf('image') !== -1) {
+              const file = item.getAsFile();
+              handleFile(file);
+              break;
+            }
+          }
+        }
+      });
+    }
+
+    function handleFile(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          saveUndo();
+          showToast('Đã dán ảnh mới vào Canvas! Nhớ bấm "Lưu vào Game" để hoàn tất.');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function downloadUrl(url, filename) {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    function logConsole(msg) {
+      const cl = document.getElementById('consoleLog');
+      const time = new Date().toLocaleTimeString();
+      cl.textContent = `[${time}] ${msg}\n` + cl.textContent;
+    }
+
+    // Event Listeners
+    function setupEventListeners() {
+      setupDropAndPaste();
+
+      // Close modal
+      document.getElementById('modalClose').onclick = () => editorModal.classList.remove('open');
+      document.getElementById('btnCancelEdit').onclick = () => editorModal.classList.remove('open');
+
+      // Tools
+      document.querySelectorAll('.tool-btn').forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentTool = btn.dataset.tool;
+          document.getElementById('textToolRow').style.display = currentTool === 'text' ? 'flex' : 'none';
+        };
+      });
+
+      document.getElementById('brushSize').oninput = (e) => {
+        document.getElementById('brushSizeVal').textContent = `${e.target.value}px`;
+      };
+      document.getElementById('fontSizeSlider').oninput = (e) => {
+        document.getElementById('fontSizeVal').textContent = `${e.target.value}px`;
+      };
+      document.getElementById('borderWidthSlider').oninput = (e) => {
+        document.getElementById('borderWidthVal').textContent = `${e.target.value}px`;
+      };
+      document.getElementById('zoomLevel').oninput = (e) => {
+        setZoom(parseFloat(e.target.value));
+      };
+
+      document.getElementById('btnUndo').onclick = doUndo;
+      document.getElementById('btnResetCanvas').onclick = () => {
+        const useHandheld = document.querySelector('input[name="ver"]:checked')?.value || '1';
+        loadToCanvas(`/api/sprite/${currentAtlas.num}/${currentSubIdx}/current.png?handheld=${useHandheld}&t=${Date.now()}`);
+      };
+
+      document.getElementById('btnSaveSprite').onclick = saveCurrentSprite;
+      document.getElementById('btnRestoreOrig').onclick = restoreOriginal;
+
+      document.getElementById('btnDownloadOrig').onclick = () => {
+        downloadUrl(`/api/sprite/${currentAtlas.num}/${currentSubIdx}/orig.png`, `orig_fdat_${currentAtlas.num}_sub_${currentSubIdx}.png`);
+      };
+      document.getElementById('btnDownloadCurrent').onclick = () => {
+        const useHandheld = document.querySelector('input[name="ver"]:checked')?.value || '1';
+        downloadUrl(`/api/sprite/${currentAtlas.num}/${currentSubIdx}/current.png?handheld=${useHandheld}`, `current_fdat_${currentAtlas.num}_sub_${currentSubIdx}.png`);
+      };
+
+      // Search & Filters
+      atlasSearch.oninput = (e) => {
+        const q = e.target.value.toLowerCase();
+        const filtered = atlases.filter(a => a.num.toString().includes(q) || a.name.toLowerCase().includes(q) || a.desc.toLowerCase().includes(q));
+        renderAtlasList(filtered);
+      };
+
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const f = btn.dataset.filter;
+          if (f === 'all') {
+            renderAtlasList(atlases);
+          } else {
+            renderAtlasList(atlases.filter(a => a.cat === f));
+          }
+        };
+      });
+
+      // Version toggle
+      document.querySelectorAll('input[name="ver"]').forEach(r => {
+        r.onchange = () => {
+          if (currentAtlas) renderSpritesGrid(currentAtlas.subs);
+        };
+      });
+
+      // Top Actions
+      document.getElementById('btnRunGame').onclick = async () => {
+        logConsole('Đang khởi chạy Paladog...');
+        try {
+          const res = await fetch('/api/run/game', { method: 'POST' });
+          const data = await res.json();
+          if (data.success) showToast('Đã mở Paladog game!');
+          else showToast('Lỗi: ' + data.error);
+        } catch (e) {
+          showToast('Lỗi kết nối: ' + e.message);
+        }
+      };
+
+      document.getElementById('btnBuildWin').onclick = async () => {
+        logConsole('Đang biên dịch Windows (make)...');
+        showToast('Đang biên dịch Windows...');
+        consoleDrawer.classList.remove('collapsed');
+        try {
+          const res = await fetch('/api/build/windows', { method: 'POST' });
+          const data = await res.json();
+          logConsole(data.stdout + '\n' + data.stderr);
+          if (data.success) showToast('✔ Biên dịch Windows thành công!');
+          else showToast('❌ Biên dịch thất bại, xem log bên dưới');
+        } catch (e) {
+          logConsole('Lỗi: ' + e.message);
+        }
+      };
+
+      document.getElementById('btnBuildR36s').onclick = async () => {
+        logConsole('Đang biên dịch ARM64 và đóng gói R36S zip...');
+        showToast('Đang đóng gói R36S (quá trình này mất khoảng 5-10s)...');
+        consoleDrawer.classList.remove('collapsed');
+        try {
+          const res = await fetch('/api/build/r36s', { method: 'POST' });
+          const data = await res.json();
+          logConsole(data.stdout + '\n' + data.stderr);
+          if (data.success) showToast('✔ Đóng gói R36S zip thành công!');
+          else showToast('❌ Đóng gói thất bại, xem log bên dưới');
+        } catch (e) {
+          logConsole('Lỗi: ' + e.message);
+        }
+      };
+
+      // Console drawer toggle
+      document.getElementById('consoleToggle').onclick = () => {
+        consoleDrawer.classList.toggle('collapsed');
+        document.getElementById('consoleArrow').textContent = consoleDrawer.classList.contains('collapsed') ? '▲ Mở rộng' : '▼ Thu gọn';
+      };
+    }
+
+    // Start
+    init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+2656: [drawBorderString] 패스워드를 입력하세요 !!  
+3690: [drawString30] Game Difficulty
+3748: [drawString24] All data at the selected slot will be deleted.
+3749: [drawString24] Are you sure to continue?
+4153: [drawIntroString] In a distant future
+4157: [drawIntroString] In a distant future
+4161: [drawIntroString] In a distant future
+4177: [drawIntroString] As the greed and selfishness of human was killing
+4178: [drawIntroString] the mother earth, gods had no choice but to annihilate
+4179: [drawIntroString] the entire human race.
+4214: [drawIntroString] In place of Human, critters were given intelligence and
+4215: [drawIntroString] established their own civilization. They worshipped their
+4216: [drawIntroString] creators and spent a millennium in peace.
+4251: [drawIntroString] Not like the human race, Critters were pure and peace
+4252: [drawIntroString] loving creatures. Meanwhile the devils were struggling
+4253: [drawIntroString] to find evil minds which once were full all around when
+4254: [drawIntroString] the earth was full of human. The devils, after all, decide
+4255: [drawIntroString] to declare war on the Critterland.
+4290: [drawIntroString] Knowing nothing but peace, Critters had not prepared
+4291: [drawIntroString] any defenses and were mercilessly killed.
+4292: [drawIntroString] The world became full with demons and the fate of
+4293: [drawIntroString] the nation seemed grim.
+4328: [drawIntroString] At the very moment everyone was about to give up hope,
+4329: [drawIntroString] one paladin arose from the dark to fight back
+4330: [drawIntroString] for the peace of Critterland...
+4368: [drawIntroString] His name... was... Paladog.
+4372: [drawIntroString] His name... was... Paladog.
+4397: [drawIntroString] His name... was... Paladog.
+4430: [drawIntroString] The fate of Critterland is on your hands.
+4431: [drawIntroString] Good luck.
+4435: [drawIntroString] The fate of Critterland is on your hands.
+4436: [drawIntroString] Good luck.
+4440: [drawIntroString] The fate of Critterland is on your hands.
+4441: [drawIntroString] Good luck.
+4468: [drawBorderString] 랭킹 로그인
+4471: [drawBorderString] 오프라인게임
+4473: [drawBorderString] 가입하기
+4475: [drawBorderString] 시작하기
+10760: [drawBorderString] Save Mode
+11344: [drawBorderString] WAVE   
+11468: [drawIntroString] Mouse the Street Fighter is no more a gangster.
+11469: [drawIntroString] He built a cheese factory that manufactures
+11470: [drawIntroString] the best cheese in Critterland.
+11473: [drawIntroString] Hood the Rabbit is enjoying his life planting trees
+11474: [drawIntroString] to make the forest green once again.
+11477: [drawIntroString] Bear the Royal Guard is disciplined himself everyday
+11478: [drawIntroString] to prevent the war break out again.
+11481: [drawIntroString] Rocky the Kangaroo once again went on a trip
+11482: [drawIntroString] seeking for stronger enemies.
+11485: [drawIntroString] Defensive Tortoise went back to his homesea
+11486: [drawIntroString] and gave a talk about his adventure to his fellows.
+11489: [drawIntroString] Monkey the Pirate is sailing the sea with the treasure map
+11490: [drawIntroString] that he received as the reward of contribution.
+11493: [drawIntroString] Elite Rhino is undergoing training to change
+11494: [drawIntroString] his aggressive character.
+11497: [drawIntroString]  Penguin the Wizard laid the Ice Wand down  
+11498: [drawIntroString]  and returned back to Academy.  
+11501: [drawIntroString] The Pink Dragon finished his journey in Critterland
+11502: [drawIntroString] and went back to the land of dragons.
+11505: [drawIntroString] And Paladog got married with the charming princess
+11506: [drawIntroString] and lived happily ever after together with their
+11507: [drawIntroString] six sons and six daughters.
+11662: [drawString] Thank you for saving me.
+11663: [drawString] Green monsters suddenly attacked
+11664: [drawString] our village and fallen us in danger.
+11667: [drawString] There was a horrible bastard
+11668: [drawString] behind of them, who can make
+11669: [drawString] green monsters by shaking his arms.
+11672: [drawString] I think he is the boss.
+11673: [drawString] Please defeat the monsters
+11674: [drawString] and save our village.
+11707: [drawString] Help! Help!
+11884: [drawString] Ah! Here it is
+11885: [drawString] This mushroom will save my baby!!
+11888: [drawString] Oh-oh!
+11889: [drawString] I am itching to kick the ball!
+11892: [drawString] HAHAHAHAHA!!
+11893: [drawString] My super strong ball coming!!
+11896: [drawString] Tee-Hee!
+11897: [drawString] My kicks are the best!!
+11900: [drawString] URGH
+11906: [drawString] Thank you so much!!
+11907: [drawString] I went Dark Forest for hurbs and mushrooms
+11908: [drawString] and the kicking monster almost got me.
+11911: [drawString] The plants of Dark Forest are used as
+11912: [drawString] good medicine, but because of the monsters
+11913: [drawString] many sick people are in danger now.
+11916: [drawString] Please save the Dark Forest.
+11919: [drawString] I have to go and take these mushrooms
+11920: [drawString] quickly to my baby now.
+11921: [drawString] Please be careful.
+12163: [drawString] Oh! What\'s that?
+12166: [drawString] Then let\'s go to the castle
+12167: [drawString] and get rid of the Dark Lord!
+12170: [drawString] OK!!
+12171: [drawString] Let\'s go and win the fight!
+12172: [drawString] I\'m raring to go!
+12175: [drawString] Where did he disappeared!
+12178: [drawString] Then what are we waiting for!
+12179: [drawString] Let\'s go to get the key back!!
+12228: [drawString] A Key!!
+12231: [drawString] The key seems to be the one
+12232: [drawString] needed to enter the Dark Castle.
+12235: [drawString] HAHAHAHAHAHA!
+12236: [drawString] Won\'t let that happen!! The key is now mine!!
+12239: [drawString] Monster took the key!!
+12242: [drawString] I see him over there
+12243: [drawString] at the Ice Glen!!
+12246: [drawString] If you want to go to the castle of Dark Lord
+12247: [drawString] you will need to beat me first!!
+12250: [drawString] I\'m Hungry! Hungry! Hungry!
+12455: [drawString] Ok, We got the key!
+12456: [drawString] Let\'s go to the castle now!!
+12459: [drawString] HAHAHA Paladog!!
+12460: [drawString] You\'ll have to fight against yourself!
+12461: [drawString] Now let\'s see if you can beat your ownself!
+12499: [drawString] Passing the cave over there is the
+12500: [drawString] short cut to the castle of Dark Lord.
+12503: [drawString] But there were many monsters inside the
+12504: [drawString] cave even before the war have begun!!
+12507: [drawString] Whatever comes out,
+12508: [drawString] we will win! Let\'s go!!
+12528: [drawString] Those monsters won\'t
+12529: [drawString] survive my bombs!
+12530: [drawString] Like POW! ee ee ee
+12790: [drawString] Impressive that you made this far!!
+12793: [drawString] But you can\'t pass without the key!!
+12796: [drawString] HAHAHAHA!!
+12800: [drawString] GRRR!! How did you got that key!!
+12806: [drawString] Even though you got the key
+12809: [drawString] Your adventure will end here, no matter what!!
+12812: [drawString] Dreadful creatures you have never seen
+12815: [drawString] are living inside there!!
+12818: [drawString] Regret that you opened the door!
+12821: [drawString] HAHAHAHA!!
+12825: [drawString] Let\'s defeat the raider and save the Critterland!!!
+12911: [drawString] Finally I made here!!
+12912: [drawString] This wasn\'t possible without your help.
+12913: [drawString] Let\'s get through this long battle!
+12916: [drawString] The burned forest will not revive back
+12917: [drawString] even I get rid of those monsters.
+12918: [drawString] But still I will fight to protect the remaining forest!!
+12921: [drawString] I am ready to sacrifice my life if
+12922: [drawString] it is needed to save the Critterland.
+12923: [drawString] Hail to Critterland!!!
+12926: [drawString] I\'ve fought with and won those who call
+12927: [drawString] themselves strong, but I need to train more.
+12928: [drawString] I want to fight with the one who is called the strongest.
+12931: [drawString] At last, at the Dark lord\'s castle.
+12932: [drawString] The battle won\'t be easy, but don\'t worry!
+12933: [drawString] I will protect you guys!!
+12936: [drawString] I don\'t really care about what happens to
+12937: [drawString] Critterland, but since I\'m paid, I\'ll beat the Dark Lord!
+12938: [drawString] I want to end this war fast, and delve for treasures. ee ee ee
+12941: [drawString] There\'s not much criminals in Critterland
+12942: [drawString] and I haven\'t had chances to show my power!!
+12943: [drawString] Now let\'s stop talking and move!!
+12946: [drawString] I don\'t like battles but I have no choice.
+12947: [drawString] Now I just want to finish this battle fast,
+12948: [drawString] and study magic more.
+12951: [drawString] GRRRR
+12952: [drawString] GRRRRRRRRRR
+12953: [drawString] GRRRRRR

@@ -1,0 +1,1601 @@
+{
+  "db0": [
+    [
+      "1",
+      "HAHAHA~ ",
+      "I'm the king of zombies. ",
+      "I'll turn you into a zombie and ",
+      "make you serve me!"
+    ],
+    [
+      "2",
+      "Hoho, Came here to know the ",
+      "secret of baby face of mine? ",
+      "It's making you into frog and",
+      "boiling a bowl of soup with frogs!!"
+    ],
+    [
+      "3",
+      "Pass Pass!! Pass the ball to me!! ",
+      "YEAHHH, Balls are coming! ",
+      "I'll kick all of those balls!!",
+      "0"
+    ],
+    [
+      "4",
+      "Maybe you have killed my cousin ",
+      "Zombie King, But I'm stronger!! ",
+      "Be killed by my mummies!",
+      "0"
+    ],
+    [
+      "5",
+      "I'll kill you before you find me! ",
+      "Tease-ya, tease-ya!",
+      "0",
+      "0"
+    ],
+    [
+      "6",
+      "I'm hungry I'm hungry I'm hungry ",
+      "I'm hungry I'm hungry ",
+      "GIMME FOOD!!",
+      "0"
+    ],
+    [
+      "7",
+      "I'm the real Paladog!! ",
+      "Now Die!!",
+      "0",
+      "0"
+    ],
+    [
+      "8",
+      "GRRRR GRR GRR",
+      "0",
+      "0",
+      "0"
+    ],
+    [
+      "9",
+      "How dare you can say ",
+      "I'm not beautiful! ",
+      "Now get my Kiss of Death!!!",
+      "0"
+    ],
+    [
+      "10",
+      "It is highly praiseworthy that ",
+      "you have made this far, ",
+      "but you will die here!! ",
+      "BE PREPARED!!!"
+    ]
+  ],
+  "db4": [
+    [
+      "1",
+      "Fist of Fury Mace",
+      "Mace that hits through 3 enemies.",
+      "This is useful when enemies are",
+      "far away."
+    ],
+    [
+      "2",
+      "Heal Mace",
+      "Mace that heals Paladog and nearby",
+      "units. If you love your friends,",
+      "you'll need it!!"
+    ],
+    [
+      "3",
+      "Turn Undead Mace",
+      "This randomly kills enemies instantly.",
+      "If you are lucky enough, you can clean",
+      "the monsters at once!!"
+    ],
+    [
+      "4",
+      "Ice Mace",
+      "The mace that freezes enemies.",
+      "It makes them not able to move",
+      "for awhile."
+    ],
+    [
+      "5",
+      "Lightning Mace",
+      "It drops powerful lightning to enemies in",
+      "narrow area, but you can't know where",
+      "it will drop."
+    ],
+    [
+      "6",
+      "Fire Mace",
+      "The mace splits fire and burns",
+      "enemies in certain range.  It's useful",
+      "when enemies are near."
+    ],
+    [
+      "7",
+      "Meteor Mace",
+      "Mace that summons meteors. Give big",
+      "damages, so it's good to use when it's",
+      "full of monsters."
+    ],
+    [
+      "8",
+      "Wind Mace",
+      "This blows enemies with whirlwind.",
+      "Blown enemies falls unconscious, but",
+      "gets no damage."
+    ],
+    [
+      "9",
+      "Food Mace",
+      "A mace that switches mana to food.",
+      "To gather your units at the beginning",
+      "of stage, try using this."
+    ],
+    [
+      "10",
+      "Poison Mace",
+      "A mace that poisons enemies.",
+      "Use it to enemies with high HPs and",
+      "save your mana."
+    ],
+    [
+      "11",
+      "Money Mace",
+      "This mace drops money on enemies.",
+      "You can use as many times, but the",
+      "cost is high."
+    ],
+    [
+      "12",
+      "Ring of Experience",
+      "Increases EXP received from enemies.",
+      "This is the one for you, who wants to",
+      "be a Grown-up quickly."
+    ],
+    [
+      "13",
+      "Ring of Wealth",
+      "Increases gold received from enemies.",
+      "I would equip 3 of that if I was able",
+      "to go and fight!"
+    ],
+    [
+      "14",
+      "Ring of Fortune",
+      "Increases the drop rate of items.",
+      "If you get an item I don't sell, come",
+      "and show me those!"
+    ],
+    [
+      "15",
+      "Ring of Vitality",
+      "A ring that increases HP.",
+      "Healthy citizens make a strong nation.",
+      "health is important!!"
+    ],
+    [
+      "16",
+      "Ring of Regeneration",
+      "A ring that slowly recovers HP.",
+      "HP slowly recovers even without the",
+      "Healing mace."
+    ],
+    [
+      "17",
+      "Ring of Agility",
+      "A ring that lets you move fast.",
+      "This is a must if you like to",
+      "hit and run."
+    ],
+    [
+      "18",
+      "Ring of Mana",
+      "This is a ring that increases max mana.",
+      "You need it to save mana and rush",
+      "when you have to."
+    ],
+    [
+      "19",
+      "Ring of Prayer",
+      "Ring that helps you recover mana.",
+      "The faster you use skill, the faster you",
+      "will win. Won't you?"
+    ],
+    [
+      "20",
+      "Ring of Cultivation",
+      "It's a ring that recovers food faster.",
+      "Feed your troops well to summon more",
+      "units of yours."
+    ],
+    [
+      "21",
+      "Ring of Preservation",
+      "This ring increases your max food.",
+      "Can't summon even your food is full?",
+      "Then use this."
+    ],
+    [
+      "22",
+      "I like money~ Oink~ ♬",
+      "Sell and sell, more and more",
+      "and gather up money~ ♪",
+      "There's nothing better than money~ ♬"
+    ],
+    [
+      "23",
+      "Gonna buy cheap and sell expensive!",
+      "Oink! Oh…",
+      "Did'ya hear what I say?",
+      "Just forget it~"
+    ],
+    [
+      "24",
+      "Oh, dear, please buy something!",
+      "I have many starving babies at home~",
+      "I AM poor, Believe me~",
+      "Ah, these jewels are all fake ones~"
+    ],
+    [
+      "25",
+      "Let me guess..",
+      "Isn't this what you're looking for?",
+      "Come on! Buy it now!",
+      "I can give you a discount~"
+    ],
+    [
+      "26",
+      "Don't wait until the monsters",
+      "drop items that you need!",
+      "Just buy what you need!",
+      "Right now, at here!"
+    ],
+    [
+      "27",
+      "Want to sort your items?",
+      "Then simply press ring shaped icon",
+      "on the bottom left!",
+      "You can sort the items as you want."
+    ],
+    [
+      "28",
+      "Strong enemies comes out a lot",
+      "when their base gets half destroyed.",
+      "You'll have to save mana for this.",
+      "So.. How about buying a mana ring?"
+    ],
+    [
+      "29",
+      "If you can't use a unit",
+      "no matter how long you have waited,",
+      "that's because of your max food.",
+      "Try using Ring of Preservation."
+    ],
+    [
+      "30",
+      "There is enchant levels on items.",
+      "The higher means the stronger.",
+      "Don't worry that your item level is low.",
+      "Use the enchant stone to upgrade it."
+    ],
+    [
+      "31",
+      "Don't be sad that you cleared",
+      "the stage with 1 star.",
+      "You can try again the cleared stage",
+      "at any time you want."
+    ],
+    [
+      "32",
+      "When you sell items to me, I buy it",
+      "cheaper than the original price.",
+      "Hey, I also need to make money. Oink",
+      "I get almost nothing as profit, trust me!"
+    ],
+    [
+      "33",
+      "Pay attention when you sell items.",
+      "Be sure that the item is not",
+      "really necessary before selling to me.",
+      "I'm not going to give the item back."
+    ],
+    [
+      "34",
+      "Unlocking new units is a good idea,",
+      "but upgrading units is also a good",
+      "strategy to make your troops stronger.",
+      "Because unlocking costs a lot."
+    ],
+    [
+      "35",
+      "Minimize the damage your units get by",
+      "gathering them and attacking at once.",
+      "Ring of Preservation is effective for",
+      "this strategy.. How about buying one?"
+    ],
+    [
+      "36",
+      "Want to upgrade your units?",
+      "Then you're at the wrong place.",
+      "Check the left side and you'll be able",
+      "to unlock or upgrade your units."
+    ],
+    [
+      "37",
+      "Your bag is full!",
+      "I can't put the item inside that.",
+      "What's all that stuff? Sell some if you",
+      "don't need it~"
+    ],
+    [
+      "38",
+      "Really going to sell that item to me?",
+      "It seems TOO good to sell.",
+      "You can't cancel after you sell the item.",
+      "Goin' to sell it?"
+    ],
+    [
+      "39",
+      "It's a real bargain.",
+      "Need something else?",
+      "0",
+      "0"
+    ],
+    [
+      "40",
+      "Thank you very much!",
+      "Come again, sir!",
+      "0",
+      "0"
+    ],
+    [
+      "41",
+      "Thank you! That item is",
+      "sure for you!",
+      "0",
+      "0"
+    ],
+    [
+      "42",
+      "I'm buying at a loss",
+      "Anything else to sell?",
+      "0",
+      "0"
+    ],
+    [
+      "43",
+      "Good idea! There is no point to",
+      "stock items that you don't use.",
+      "0",
+      "0"
+    ],
+    [
+      "44",
+      "Thank you for selling!",
+      "Is there anything you want to buy?",
+      "0",
+      "0"
+    ],
+    [
+      "45",
+      "Fist of Fury Mace",
+      "Spits a energy ball that hits",
+      "through 3 enemies. This is useful",
+      "when enemies are far away."
+    ],
+    [
+      "46",
+      "Heal Mace",
+      "This heals Paladog and",
+      "nearby units.",
+      "Life is precious!"
+    ],
+    [
+      "47",
+      "Turn Undead Mace",
+      "This mace randomly kills enemies",
+      "instantly. Give eternal rest to",
+      "the undead roving."
+    ],
+    [
+      "48",
+      "Ice Mace",
+      "The mace that freezes enemies.",
+      "It is useful when",
+      "the enemy is powerful."
+    ],
+    [
+      "49",
+      "Lightning Mace",
+      "It drops powerful lightning to",
+      "enemies in narrow area, so try using",
+      "it when enemies are all together."
+    ],
+    [
+      "50",
+      "Fire Mace",
+      "The mace splits fire and burns",
+      "enemies. Since the range is not that",
+      "wide, you'll have to hit and run."
+    ],
+    [
+      "51",
+      "Meteor Mace",
+      "It's a mace that summons meteors",
+      "and hit enemies. It uses lots of",
+      "mana, but still powerful."
+    ],
+    [
+      "52",
+      "Wind Mace",
+      "This blows enemies with whirlwind.",
+      "It doesn't give damages to enemies,",
+      "but blow them far away."
+    ],
+    [
+      "53",
+      "Food Mace",
+      "A mace that switches mana to food.",
+      "If you want to summon more units,",
+      "try using this."
+    ],
+    [
+      "54",
+      "Poison Mace",
+      "A mace that poisons enemies",
+      "and make them lose HP slowly.",
+      "But it doesn't finish them."
+    ],
+    [
+      "55",
+      "Money Mace",
+      "Attacks enemies with money",
+      "You can use this if you have money",
+      "even when you don't have mana."
+    ],
+    [
+      "56",
+      "Ring of Experience",
+      "Your level up gets faster.",
+      "If you want to learn more skills",
+      "try this."
+    ],
+    [
+      "57",
+      "Ring of Wealth",
+      "This ring makes you a rich.",
+      "You will get extra money with this",
+      "ring when you kill enemies."
+    ],
+    [
+      "58",
+      "Ring of Fortune",
+      "Increases the drop rate of items.",
+      "If you need items not selling at the",
+      "shop, this is what you need."
+    ],
+    [
+      "59",
+      "Ring of Vitality",
+      "A ring that increases HP.",
+      "I'm sure that you know",
+      "being healthy is important!!"
+    ],
+    [
+      "60",
+      "Ring of Regeneration",
+      "A ring that slowly recovers HP.",
+      "The HP slowly recovers even",
+      "without the Healing mace."
+    ],
+    [
+      "61",
+      "Ring of Agility",
+      "A ring that lets you move fast.",
+      "This is a must if you like to",
+      "hit and run."
+    ],
+    [
+      "62",
+      "Ring of Mana",
+      "This is a ring that increases max mana.",
+      "You'll need it to save mana and",
+      "give a rush when you have to."
+    ],
+    [
+      "63",
+      "Ring of Prayer",
+      "Helps you to recover mana quickly.",
+      "You need mana to use",
+      "your maces."
+    ],
+    [
+      "64",
+      "Ring of Cultivation",
+      "It's a ring that recovers food faster.",
+      "You can summon more units",
+      "if you have more foods."
+    ],
+    [
+      "65",
+      "Ring of Preservation",
+      "This ring increases your max food.",
+      "You can run the battle favorably by",
+      "summoning your units all together."
+    ],
+    [
+      "66",
+      "Undead Bastards!!",
+      "They took away my",
+      "father and mother!",
+      "I will never forgive them!"
+    ],
+    [
+      "67",
+      "I want to grow up fast",
+      "and help you guys fight",
+      "against the evil!",
+      "I'm working up every day!"
+    ],
+    [
+      "68",
+      "It is important to check",
+      "your items before heading",
+      "for a battle! Ask me if you have",
+      "any question!"
+    ],
+    [
+      "69",
+      "There were a lot of delicious",
+      "apples in days gone by,",
+      "but nowadays it's hard to",
+      "get even apples like this."
+    ],
+    [
+      "70",
+      "If the battle is to hard for you",
+      "try changing your equipment",
+      "instead of upgrading the",
+      "units."
+    ],
+    [
+      "71",
+      "Want to sort items?",
+      "Then press the ring-like icon",
+      "on the bottom left!",
+      "It will sort the items as you want."
+    ],
+    [
+      "72",
+      "If you're going to sell or buy items",
+      "visit the shop on the right.",
+      "Good equipment mean the",
+      "shortcut to victory!"
+    ],
+    [
+      "73",
+      "You have to press the item first",
+      "if you want to equip or",
+      "unequip an item.",
+      "It's pretty obvious, isn't it?"
+    ],
+    [
+      "74",
+      "Weapon to use depends on your",
+      "strategy, but it's good to have",
+      "missile, ranged and healing one",
+      "to make the battle easy."
+    ],
+    [
+      "75",
+      "If the battle is too hard,",
+      "raising your level at some easy",
+      "stages is also a good",
+      "idea."
+    ],
+    [
+      "76",
+      "If your inventory is full, monsters",
+      "won't drop items any more.",
+      "So I recommend selling needless",
+      "items at the shop."
+    ],
+    [
+      "77",
+      "It is not a good idea to",
+      "summon units right after",
+      "the battle starts.",
+      "Units are weak alone."
+    ],
+    [
+      "78",
+      "Strong enemies comes out",
+      "a lot when their base gets",
+      "half destroyed.",
+      "Be prepared for that!"
+    ],
+    [
+      "79",
+      "Each boss monster has distinct",
+      "features. So the strategy also has to",
+      "be different for each of them!",
+      "Think wisely!"
+    ],
+    [
+      "80",
+      "Enemies that attack from afar",
+      "becomes scary when they're all",
+      "along. Get rid of them time to time",
+      "to avoid that situation!"
+    ],
+    [
+      "81",
+      "Allies get stronger when they",
+      "are in the aura, so make them",
+      "to be always in the aura.",
+      "Enlarging the aura will help a lot!"
+    ],
+    [
+      "82",
+      "The skill of allies can also",
+      "knock down your enemies.",
+      "Don't forget that the skills only",
+      "works when allies are in the aura!"
+    ],
+    [
+      "83",
+      "Paladog and Enemy bosses",
+      "don't get knocked back, ",
+      "instantly die or get frozen.",
+      "This is useful to know."
+    ]
+  ],
+  "db6": [
+    [
+      "1",
+      "Don’t be fooled by the size of his stature!",
+      "Once a notorious gangster who owned the streets,",
+      "now a patriotic soldier to fight for Critterland.",
+      "0",
+      "Aura enables him jumping assault on enemy.",
+      "0"
+    ],
+    [
+      "2",
+      "A toxophilite capable of long distance attacks.",
+      "Once peace loving herbivore,",
+      "but now arisen to save their burning forest against",
+      "the enemy force.",
+      "Within aura range, launch  fire arrows and",
+      "penetrates enemies."
+    ],
+    [
+      "3",
+      "A spearman capable of mid distance attack.",
+      "He was trained to protect the royal palace",
+      "but the demands of the times made him defeat",
+      "the enemy ruthlessly.",
+      "Within the aura range, thrown spears inflict",
+      "damage to any enemy unit in its path."
+    ],
+    [
+      "4",
+      "Master of martial arts.",
+      " Always been looking for stronger opponents,",
+      "and the battlefield has become his own trial.",
+      "0",
+      "Attacks with several punches at once within",
+      "the aura range."
+    ],
+    [
+      "5",
+      "A heavily armored unit that bares enemy attack",
+      "and defend his friends.",
+      "Behind his intimidating look he got the warmest",
+      "heart inside!",
+      "Recoil-free when hit.",
+      "Doubles defense within aura range."
+    ],
+    [
+      "6",
+      "Master of explosives. Incurs damage to multiple",
+      "enemy units with the power of gunpowder.",
+      "Although he is a mercenary, there is no doubt",
+      "he is a great addition to the ally force.",
+      "Throws more powerful bombs within",
+      "the aura range."
+    ],
+    [
+      "7",
+      "The very best soldier that busts up enemy units",
+      "with his destructive Morningstar.",
+      "Natural born fighter ready to charge off whatever",
+      "comes in his way.",
+      "Within aura range, he charges enemies with",
+      "his strong horn."
+    ],
+    [
+      "8",
+      "A wise critter who researches magical powers.",
+      "It came to an agreement to use forbidden magic",
+      "for this wartime: cryo-attack.",
+      "0",
+      "Within the aura range, the ice attack becomes",
+      "stronger."
+    ],
+    [
+      "9",
+      "A living flamethrower.",
+      "Chosen by other dragons for his braveness.",
+      "0",
+      "0",
+      "Spits more powerful flame within the aura range.",
+      "0"
+    ]
+  ],
+  "drawing_calls": [
+    {
+      "line": 2656,
+      "func": "drawBorderString",
+      "text": "패스워드를 입력하세요 !!  "
+    },
+    {
+      "line": 3690,
+      "func": "drawString30",
+      "text": "Game Difficulty"
+    },
+    {
+      "line": 3748,
+      "func": "drawString24",
+      "text": "All data at the selected slot will be deleted."
+    },
+    {
+      "line": 3749,
+      "func": "drawString24",
+      "text": "Are you sure to continue?"
+    },
+    {
+      "line": 4153,
+      "func": "drawIntroString",
+      "text": "In a distant future"
+    },
+    {
+      "line": 4157,
+      "func": "drawIntroString",
+      "text": "In a distant future"
+    },
+    {
+      "line": 4161,
+      "func": "drawIntroString",
+      "text": "In a distant future"
+    },
+    {
+      "line": 4177,
+      "func": "drawIntroString",
+      "text": "As the greed and selfishness of human was killing"
+    },
+    {
+      "line": 4178,
+      "func": "drawIntroString",
+      "text": "the mother earth, gods had no choice but to annihilate"
+    },
+    {
+      "line": 4179,
+      "func": "drawIntroString",
+      "text": "the entire human race."
+    },
+    {
+      "line": 4214,
+      "func": "drawIntroString",
+      "text": "In place of Human, critters were given intelligence and"
+    },
+    {
+      "line": 4215,
+      "func": "drawIntroString",
+      "text": "established their own civilization. They worshipped their"
+    },
+    {
+      "line": 4216,
+      "func": "drawIntroString",
+      "text": "creators and spent a millennium in peace."
+    },
+    {
+      "line": 4251,
+      "func": "drawIntroString",
+      "text": "Not like the human race, Critters were pure and peace"
+    },
+    {
+      "line": 4252,
+      "func": "drawIntroString",
+      "text": "loving creatures. Meanwhile the devils were struggling"
+    },
+    {
+      "line": 4253,
+      "func": "drawIntroString",
+      "text": "to find evil minds which once were full all around when"
+    },
+    {
+      "line": 4254,
+      "func": "drawIntroString",
+      "text": "the earth was full of human. The devils, after all, decide"
+    },
+    {
+      "line": 4255,
+      "func": "drawIntroString",
+      "text": "to declare war on the Critterland."
+    },
+    {
+      "line": 4290,
+      "func": "drawIntroString",
+      "text": "Knowing nothing but peace, Critters had not prepared"
+    },
+    {
+      "line": 4291,
+      "func": "drawIntroString",
+      "text": "any defenses and were mercilessly killed."
+    },
+    {
+      "line": 4292,
+      "func": "drawIntroString",
+      "text": "The world became full with demons and the fate of"
+    },
+    {
+      "line": 4293,
+      "func": "drawIntroString",
+      "text": "the nation seemed grim."
+    },
+    {
+      "line": 4328,
+      "func": "drawIntroString",
+      "text": "At the very moment everyone was about to give up hope,"
+    },
+    {
+      "line": 4329,
+      "func": "drawIntroString",
+      "text": "one paladin arose from the dark to fight back"
+    },
+    {
+      "line": 4330,
+      "func": "drawIntroString",
+      "text": "for the peace of Critterland..."
+    },
+    {
+      "line": 4368,
+      "func": "drawIntroString",
+      "text": "His name... was... Paladog."
+    },
+    {
+      "line": 4372,
+      "func": "drawIntroString",
+      "text": "His name... was... Paladog."
+    },
+    {
+      "line": 4397,
+      "func": "drawIntroString",
+      "text": "His name... was... Paladog."
+    },
+    {
+      "line": 4430,
+      "func": "drawIntroString",
+      "text": "The fate of Critterland is on your hands."
+    },
+    {
+      "line": 4431,
+      "func": "drawIntroString",
+      "text": "Good luck."
+    },
+    {
+      "line": 4435,
+      "func": "drawIntroString",
+      "text": "The fate of Critterland is on your hands."
+    },
+    {
+      "line": 4436,
+      "func": "drawIntroString",
+      "text": "Good luck."
+    },
+    {
+      "line": 4440,
+      "func": "drawIntroString",
+      "text": "The fate of Critterland is on your hands."
+    },
+    {
+      "line": 4441,
+      "func": "drawIntroString",
+      "text": "Good luck."
+    },
+    {
+      "line": 4468,
+      "func": "drawBorderString",
+      "text": "랭킹 로그인"
+    },
+    {
+      "line": 4471,
+      "func": "drawBorderString",
+      "text": "오프라인게임"
+    },
+    {
+      "line": 4473,
+      "func": "drawBorderString",
+      "text": "가입하기"
+    },
+    {
+      "line": 4475,
+      "func": "drawBorderString",
+      "text": "시작하기"
+    },
+    {
+      "line": 10760,
+      "func": "drawBorderString",
+      "text": "Save Mode"
+    },
+    {
+      "line": 11344,
+      "func": "drawBorderString",
+      "text": "WAVE   "
+    },
+    {
+      "line": 11468,
+      "func": "drawIntroString",
+      "text": "Mouse the Street Fighter is no more a gangster."
+    },
+    {
+      "line": 11469,
+      "func": "drawIntroString",
+      "text": "He built a cheese factory that manufactures"
+    },
+    {
+      "line": 11470,
+      "func": "drawIntroString",
+      "text": "the best cheese in Critterland."
+    },
+    {
+      "line": 11473,
+      "func": "drawIntroString",
+      "text": "Hood the Rabbit is enjoying his life planting trees"
+    },
+    {
+      "line": 11474,
+      "func": "drawIntroString",
+      "text": "to make the forest green once again."
+    },
+    {
+      "line": 11477,
+      "func": "drawIntroString",
+      "text": "Bear the Royal Guard is disciplined himself everyday"
+    },
+    {
+      "line": 11478,
+      "func": "drawIntroString",
+      "text": "to prevent the war break out again."
+    },
+    {
+      "line": 11481,
+      "func": "drawIntroString",
+      "text": "Rocky the Kangaroo once again went on a trip"
+    },
+    {
+      "line": 11482,
+      "func": "drawIntroString",
+      "text": "seeking for stronger enemies."
+    },
+    {
+      "line": 11485,
+      "func": "drawIntroString",
+      "text": "Defensive Tortoise went back to his homesea"
+    },
+    {
+      "line": 11486,
+      "func": "drawIntroString",
+      "text": "and gave a talk about his adventure to his fellows."
+    },
+    {
+      "line": 11489,
+      "func": "drawIntroString",
+      "text": "Monkey the Pirate is sailing the sea with the treasure map"
+    },
+    {
+      "line": 11490,
+      "func": "drawIntroString",
+      "text": "that he received as the reward of contribution."
+    },
+    {
+      "line": 11493,
+      "func": "drawIntroString",
+      "text": "Elite Rhino is undergoing training to change"
+    },
+    {
+      "line": 11494,
+      "func": "drawIntroString",
+      "text": "his aggressive character."
+    },
+    {
+      "line": 11497,
+      "func": "drawIntroString",
+      "text": " Penguin the Wizard laid the Ice Wand down  "
+    },
+    {
+      "line": 11498,
+      "func": "drawIntroString",
+      "text": " and returned back to Academy.  "
+    },
+    {
+      "line": 11501,
+      "func": "drawIntroString",
+      "text": "The Pink Dragon finished his journey in Critterland"
+    },
+    {
+      "line": 11502,
+      "func": "drawIntroString",
+      "text": "and went back to the land of dragons."
+    },
+    {
+      "line": 11505,
+      "func": "drawIntroString",
+      "text": "And Paladog got married with the charming princess"
+    },
+    {
+      "line": 11506,
+      "func": "drawIntroString",
+      "text": "and lived happily ever after together with their"
+    },
+    {
+      "line": 11507,
+      "func": "drawIntroString",
+      "text": "six sons and six daughters."
+    },
+    {
+      "line": 11662,
+      "func": "drawString",
+      "text": "Thank you for saving me."
+    },
+    {
+      "line": 11663,
+      "func": "drawString",
+      "text": "Green monsters suddenly attacked"
+    },
+    {
+      "line": 11664,
+      "func": "drawString",
+      "text": "our village and fallen us in danger."
+    },
+    {
+      "line": 11667,
+      "func": "drawString",
+      "text": "There was a horrible bastard"
+    },
+    {
+      "line": 11668,
+      "func": "drawString",
+      "text": "behind of them, who can make"
+    },
+    {
+      "line": 11669,
+      "func": "drawString",
+      "text": "green monsters by shaking his arms."
+    },
+    {
+      "line": 11672,
+      "func": "drawString",
+      "text": "I think he is the boss."
+    },
+    {
+      "line": 11673,
+      "func": "drawString",
+      "text": "Please defeat the monsters"
+    },
+    {
+      "line": 11674,
+      "func": "drawString",
+      "text": "and save our village."
+    },
+    {
+      "line": 11707,
+      "func": "drawString",
+      "text": "Help! Help!"
+    },
+    {
+      "line": 11884,
+      "func": "drawString",
+      "text": "Ah! Here it is"
+    },
+    {
+      "line": 11885,
+      "func": "drawString",
+      "text": "This mushroom will save my baby!!"
+    },
+    {
+      "line": 11888,
+      "func": "drawString",
+      "text": "Oh-oh!"
+    },
+    {
+      "line": 11889,
+      "func": "drawString",
+      "text": "I am itching to kick the ball!"
+    },
+    {
+      "line": 11892,
+      "func": "drawString",
+      "text": "HAHAHAHAHA!!"
+    },
+    {
+      "line": 11893,
+      "func": "drawString",
+      "text": "My super strong ball coming!!"
+    },
+    {
+      "line": 11896,
+      "func": "drawString",
+      "text": "Tee-Hee!"
+    },
+    {
+      "line": 11897,
+      "func": "drawString",
+      "text": "My kicks are the best!!"
+    },
+    {
+      "line": 11900,
+      "func": "drawString",
+      "text": "URGH"
+    },
+    {
+      "line": 11906,
+      "func": "drawString",
+      "text": "Thank you so much!!"
+    },
+    {
+      "line": 11907,
+      "func": "drawString",
+      "text": "I went Dark Forest for hurbs and mushrooms"
+    },
+    {
+      "line": 11908,
+      "func": "drawString",
+      "text": "and the kicking monster almost got me."
+    },
+    {
+      "line": 11911,
+      "func": "drawString",
+      "text": "The plants of Dark Forest are used as"
+    },
+    {
+      "line": 11912,
+      "func": "drawString",
+      "text": "good medicine, but because of the monsters"
+    },
+    {
+      "line": 11913,
+      "func": "drawString",
+      "text": "many sick people are in danger now."
+    },
+    {
+      "line": 11916,
+      "func": "drawString",
+      "text": "Please save the Dark Forest."
+    },
+    {
+      "line": 11919,
+      "func": "drawString",
+      "text": "I have to go and take these mushrooms"
+    },
+    {
+      "line": 11920,
+      "func": "drawString",
+      "text": "quickly to my baby now."
+    },
+    {
+      "line": 11921,
+      "func": "drawString",
+      "text": "Please be careful."
+    },
+    {
+      "line": 12163,
+      "func": "drawString",
+      "text": "Oh! What\\'s that?"
+    },
+    {
+      "line": 12166,
+      "func": "drawString",
+      "text": "Then let\\'s go to the castle"
+    },
+    {
+      "line": 12167,
+      "func": "drawString",
+      "text": "and get rid of the Dark Lord!"
+    },
+    {
+      "line": 12170,
+      "func": "drawString",
+      "text": "OK!!"
+    },
+    {
+      "line": 12171,
+      "func": "drawString",
+      "text": "Let\\'s go and win the fight!"
+    },
+    {
+      "line": 12172,
+      "func": "drawString",
+      "text": "I\\'m raring to go!"
+    },
+    {
+      "line": 12175,
+      "func": "drawString",
+      "text": "Where did he disappeared!"
+    },
+    {
+      "line": 12178,
+      "func": "drawString",
+      "text": "Then what are we waiting for!"
+    },
+    {
+      "line": 12179,
+      "func": "drawString",
+      "text": "Let\\'s go to get the key back!!"
+    },
+    {
+      "line": 12228,
+      "func": "drawString",
+      "text": "A Key!!"
+    },
+    {
+      "line": 12231,
+      "func": "drawString",
+      "text": "The key seems to be the one"
+    },
+    {
+      "line": 12232,
+      "func": "drawString",
+      "text": "needed to enter the Dark Castle."
+    },
+    {
+      "line": 12235,
+      "func": "drawString",
+      "text": "HAHAHAHAHAHA!"
+    },
+    {
+      "line": 12236,
+      "func": "drawString",
+      "text": "Won\\'t let that happen!! The key is now mine!!"
+    },
+    {
+      "line": 12239,
+      "func": "drawString",
+      "text": "Monster took the key!!"
+    },
+    {
+      "line": 12242,
+      "func": "drawString",
+      "text": "I see him over there"
+    },
+    {
+      "line": 12243,
+      "func": "drawString",
+      "text": "at the Ice Glen!!"
+    },
+    {
+      "line": 12246,
+      "func": "drawString",
+      "text": "If you want to go to the castle of Dark Lord"
+    },
+    {
+      "line": 12247,
+      "func": "drawString",
+      "text": "you will need to beat me first!!"
+    },
+    {
+      "line": 12250,
+      "func": "drawString",
+      "text": "I\\'m Hungry! Hungry! Hungry!"
+    },
+    {
+      "line": 12455,
+      "func": "drawString",
+      "text": "Ok, We got the key!"
+    },
+    {
+      "line": 12456,
+      "func": "drawString",
+      "text": "Let\\'s go to the castle now!!"
+    },
+    {
+      "line": 12459,
+      "func": "drawString",
+      "text": "HAHAHA Paladog!!"
+    },
+    {
+      "line": 12460,
+      "func": "drawString",
+      "text": "You\\'ll have to fight against yourself!"
+    },
+    {
+      "line": 12461,
+      "func": "drawString",
+      "text": "Now let\\'s see if you can beat your ownself!"
+    },
+    {
+      "line": 12499,
+      "func": "drawString",
+      "text": "Passing the cave over there is the"
+    },
+    {
+      "line": 12500,
+      "func": "drawString",
+      "text": "short cut to the castle of Dark Lord."
+    },
+    {
+      "line": 12503,
+      "func": "drawString",
+      "text": "But there were many monsters inside the"
+    },
+    {
+      "line": 12504,
+      "func": "drawString",
+      "text": "cave even before the war have begun!!"
+    },
+    {
+      "line": 12507,
+      "func": "drawString",
+      "text": "Whatever comes out,"
+    },
+    {
+      "line": 12508,
+      "func": "drawString",
+      "text": "we will win! Let\\'s go!!"
+    },
+    {
+      "line": 12528,
+      "func": "drawString",
+      "text": "Those monsters won\\'t"
+    },
+    {
+      "line": 12529,
+      "func": "drawString",
+      "text": "survive my bombs!"
+    },
+    {
+      "line": 12530,
+      "func": "drawString",
+      "text": "Like POW! ee ee ee"
+    },
+    {
+      "line": 12790,
+      "func": "drawString",
+      "text": "Impressive that you made this far!!"
+    },
+    {
+      "line": 12793,
+      "func": "drawString",
+      "text": "But you can\\'t pass without the key!!"
+    },
+    {
+      "line": 12796,
+      "func": "drawString",
+      "text": "HAHAHAHA!!"
+    },
+    {
+      "line": 12800,
+      "func": "drawString",
+      "text": "GRRR!! How did you got that key!!"
+    },
+    {
+      "line": 12806,
+      "func": "drawString",
+      "text": "Even though you got the key"
+    },
+    {
+      "line": 12809,
+      "func": "drawString",
+      "text": "Your adventure will end here, no matter what!!"
+    },
+    {
+      "line": 12812,
+      "func": "drawString",
+      "text": "Dreadful creatures you have never seen"
+    },
+    {
+      "line": 12815,
+      "func": "drawString",
+      "text": "are living inside there!!"
+    },
+    {
+      "line": 12818,
+      "func": "drawString",
+      "text": "Regret that you opened the door!"
+    },
+    {
+      "line": 12821,
+      "func": "drawString",
+      "text": "HAHAHAHA!!"
+    },
+    {
+      "line": 12825,
+      "func": "drawString",
+      "text": "Let\\'s defeat the raider and save the Critterland!!!"
+    },
+    {
+      "line": 12911,
+      "func": "drawString",
+      "text": "Finally I made here!!"
+    },
+    {
+      "line": 12912,
+      "func": "drawString",
+      "text": "This wasn\\'t possible without your help."
+    },
+    {
+      "line": 12913,
+      "func": "drawString",
+      "text": "Let\\'s get through this long battle!"
+    },
+    {
+      "line": 12916,
+      "func": "drawString",
+      "text": "The burned forest will not revive back"
+    },
+    {
+      "line": 12917,
+      "func": "drawString",
+      "text": "even I get rid of those monsters."
+    },
+    {
+      "line": 12918,
+      "func": "drawString",
+      "text": "But still I will fight to protect the remaining forest!!"
+    },
+    {
+      "line": 12921,
+      "func": "drawString",
+      "text": "I am ready to sacrifice my life if"
+    },
+    {
+      "line": 12922,
+      "func": "drawString",
+      "text": "it is needed to save the Critterland."
+    },
+    {
+      "line": 12923,
+      "func": "drawString",
+      "text": "Hail to Critterland!!!"
+    },
+    {
+      "line": 12926,
+      "func": "drawString",
+      "text": "I\\'ve fought with and won those who call"
+    },
+    {
+      "line": 12927,
+      "func": "drawString",
+      "text": "themselves strong, but I need to train more."
+    },
+    {
+      "line": 12928,
+      "func": "drawString",
+      "text": "I want to fight with the one who is called the strongest."
+    },
+    {
+      "line": 12931,
+      "func": "drawString",
+      "text": "At last, at the Dark lord\\'s castle."
+    },
+    {
+      "line": 12932,
+      "func": "drawString",
+      "text": "The battle won\\'t be easy, but don\\'t worry!"
+    },
+    {
+      "line": 12933,
+      "func": "drawString",
+      "text": "I will protect you guys!!"
+    },
+    {
+      "line": 12936,
+      "func": "drawString",
+      "text": "I don\\'t really care about what happens to"
+    },
+    {
+      "line": 12937,
+      "func": "drawString",
+      "text": "Critterland, but since I\\'m paid, I\\'ll beat the Dark Lord!"
+    },
+    {
+      "line": 12938,
+      "func": "drawString",
+      "text": "I want to end this war fast, and delve for treasures. ee ee ee"
+    },
+    {
+      "line": 12941,
+      "func": "drawString",
+      "text": "There\\'s not much criminals in Critterland"
+    },
+    {
+      "line": 12942,
+      "func": "drawString",
+      "text": "and I haven\\'t had chances to show my power!!"
+    },
+    {
+      "line": 12943,
+      "func": "drawString",
+      "text": "Now let\\'s stop talking and move!!"
+    },
+    {
+      "line": 12946,
+      "func": "drawString",
+      "text": "I don\\'t like battles but I have no choice."
+    },
+    {
+      "line": 12947,
+      "func": "drawString",
+      "text": "Now I just want to finish this battle fast,"
+    },
+    {
+      "line": 12948,
+      "func": "drawString",
+      "text": "and study magic more."
+    },
+    {
+      "line": 12951,
+      "func": "drawString",
+      "text": "GRRRR"
+    },
+    {
+      "line": 12952,
+      "func": "drawString",
+      "text": "GRRRRRRRRRR"
+    },
+    {
+      "line": 12953,
+      "func": "drawString",
+      "text": "GRRRRRR"
+    }
+  ],
+  "other_scripts": {
+    "Library.as": [
+      ".adf",
+      ".fani",
+      "txt/",
+      ".txt",
+      ".xml"
+    ],
+    "Library_DB0.as": [
+      "/_assets/408_com.fazecat.web.paladog.Library_DB0.bin",
+      "application/octet-stream"
+    ],
+    "Library_DB1.as": [
+      "/_assets/410_com.fazecat.web.paladog.Library_DB1.bin",
+      "application/octet-stream"
+    ],
+    "Library_DB2.as": [
+      "/_assets/412_com.fazecat.web.paladog.Library_DB2.bin",
+      "application/octet-stream"
+    ],
+    "Library_DB3.as": [
+      "/_assets/415_com.fazecat.web.paladog.Library_DB3.bin",
+      "application/octet-stream"
+    ],
+    "Library_DB4.as": [
+      "/_assets/416_com.fazecat.web.paladog.Library_DB4.bin",
+      "application/octet-stream"
+    ],
+    "Library_DB5.as": [
+      "application/octet-stream",
+      "/_assets/417_com.fazecat.web.paladog.Library_DB5.bin"
+    ],
+    "Library_DB6.as": [
+      "/_assets/420_com.fazecat.web.paladog.Library_DB6.bin",
+      "application/octet-stream"
+    ],
+    "Operation.as": [
+      "b01",
+      "x01",
+      "u01",
+      "n01",
+      "m01"
+    ]
+  }
+}

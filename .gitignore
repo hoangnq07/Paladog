@@ -1,0 +1,34 @@
+# Build outputs
+native_port/build/
+native_port/build-arm64/
+native_port/dist/
+*.exe
+*.o
+*.d
+*.bin.bak
+
+# Release archives
+*.zip
+
+# Toolchain (downloaded Zig & ARM64 cross-compile SDK)
+native_port/toolchain/
+
+# Python cache & runtime logs
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+
+# Test runs & scratch folders
+native_port/shots/
+native_port/scratch/
+extracted/temp_inspect/
+extracted/orig_scripts/
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~

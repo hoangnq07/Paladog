@@ -172,7 +172,7 @@ def main():
             zig = os.path.join(d, 'zig.exe')
             break
     
-    raw_bin = os.path.join(NATIVE, 'build-arm64', 'paladog')
+    raw_bin = os.path.join(NATIVE, 'build-arm64-en', 'paladog')
     out_bin = os.path.join(DIST_GAME, 'paladog')
     if zig and os.path.exists(zig):
         subprocess.check_call([zig, 'objcopy', '--strip-all', raw_bin, out_bin])

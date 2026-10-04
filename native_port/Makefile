@@ -17,7 +17,11 @@ ifeq ($(ARM64),1)
 ZIGDIR   := $(wildcard toolchain/zig-*)
 SDK      := toolchain/arm64-sdk/usr
 CXX      := $(ZIGDIR)/zig.exe c++ -target aarch64-linux-gnu.2.28 -mcpu=cortex_a35
+ifeq ($(LANG_EN),1)
+BUILD    := build-arm64-en
+else
 BUILD    := build-arm64
+endif
 CXXFLAGS ?= -O2
 CXXFLAGS += -std=c++17 -fwrapv -Wall -Wextra -Wno-unused-parameter -DPALADOG_HANDHELD \
             -I$(SDK)/include/SDL2 -I$(SDK)/include -I$(SDK)/include/aarch64-linux-gnu
@@ -31,6 +35,12 @@ PKGS     := sdl2 SDL2_image SDL2_mixer SDL2_ttf
 CXXFLAGS ?= -O2
 CXXFLAGS += -std=c++17 -fwrapv -Wall -Wextra -Wno-unused-parameter $(shell pkg-config --cflags $(PKGS))
 LDLIBS   += $(shell pkg-config --libs $(PKGS))
+
+ifeq ($(LANG_EN),1)
+BUILD    := build-en
+else
+BUILD    := build
+endif
 
 ifeq ($(HANDHELD),1)
 CXXFLAGS += -DPALADOG_HANDHELD

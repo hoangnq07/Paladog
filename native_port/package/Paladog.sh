@@ -1,6 +1,4 @@
 #!/bin/bash
-# Paladog - native port launcher for PortMaster (ArkOS, AmberELEC, ROCKNIX, muOS, etc.)
-# Copy this file and the "paladog" folder into /roms/ports (or /roms2/ports).
 
 XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 
@@ -19,19 +17,23 @@ source $controlfolder/control.txt
 get_controls
 
 GAMEDIR="/$directory/ports/paladog"
+
 cd "$GAMEDIR" || exit 1
 
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
 
-# The game talks to the controller through SDL_GameController directly,
-# so no gptokeyb mapping is needed.
-export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
-export PALADOG_ASSETS="$GAMEDIR/assets"
-# Save files (SharedObject .sol) stay inside the game folder.
-export XDG_DATA_HOME="$GAMEDIR/conf"
-mkdir -p "$XDG_DATA_HOME"
+# Setup permissions
+$ESUDO chmod 666 /dev/uinput
 
-chmod +x ./paladog
-$ESUDO ./paladog
+# Setup save dir via PortMaster bind helper
+mkdir -p "$GAMEDIR/conf"
+bind_directories ~/.local/share/paladog "$GAMEDIR/conf"
+
+# Controller config
+export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
+
+# Self-heal executable bit and launch
+pm_platform_helper "$GAMEDIR/paladog"
+"$GAMEDIR/paladog"
 
 pm_finish

@@ -132,8 +132,8 @@ def patch_en_handheld_tutorials():
 def generate_cover_and_screenshot():
     cov_src = os.path.join(NATIVE, 'shots', 'cover.png')
     sc_src = os.path.join(NATIVE, 'shots', 'screenshot.png')
-    cov_dst = os.path.join(DIST_GAME, 'cover.png')
-    sc_dst = os.path.join(DIST_GAME, 'screenshot.png')
+    cov_dst = os.path.join(DIST_ROOT, 'cover.png')
+    sc_dst = os.path.join(DIST_ROOT, 'screenshot.png')
 
     if os.path.exists(sc_src):
         shutil.copy2(sc_src, sc_dst)
@@ -247,63 +247,89 @@ def main():
   </game>
 </gameList>
 """
-    readme_md = """# Paladog (English PortMaster Release)
+    readme_md = """## Notes
 
-Native C++ / SDL2 port of the classic strategy defense game **Paladog** by FazeCat.
+Thanks to [FazeCat](http://www.fazecat.com) for the original Paladog game and assets.
+Native C++ / SDL2 port by [hoangnq07](https://github.com/hoangnq07/Paladog).
 
-## Handheld Controls:
-- **D-Pad Left / Right**: Move Paladog (Normal stage) / Select unit (War Road mode)
-- **D-Pad Up / Down**: Change summoning lane (War Road mode)
-- **Button A**: Summon selected unit / Confirm in menus
-- **Button B**: Magic skill 3 (Mace 3) / Cancel / Back
-- **Button X**: Magic skill 1 (Mace 1) / Select in menus
-- **Button Y**: Magic skill 2 (Mace 2)
-- **L1 / R1**: Cycle through available unit types
-- **Start**: Pause game
+## Controls
 
-## Installation:
-Extract `Paladog.sh` and the `paladog/` folder into `/roms/ports/` (or `/roms2/ports/`) on your handheld SD card.
+| Button | Action |
+|--|--|
+| D-Pad Left / Right | Move Paladog / Select unit in War Road |
+| D-Pad Up / Down | Change summoning lane in War Road |
+| Left Analog Stick | Move Paladog / Virtual cursor in menus |
+| A | Summon unit / Confirm in menus |
+| B | Magic skill 3 (Mace 3) / Cancel / Back |
+| X | Magic skill 1 (Mace 1) / Select in menus |
+| Y | Magic skill 2 (Mace 2) |
+| L1 / R1 | Cycle through available unit types |
+| Start | Pause game |
+
+## Compile
+
+```bash
+git clone https://github.com/hoangnq07/Paladog.git
+cd Paladog/native_port
+make aarch64 LANG_EN=1
+```
 """
-    # Write metadata to DIST_GAME
-    with open(os.path.join(DIST_GAME, 'port.json'), 'w', encoding='utf-8', newline='\n') as f:
-        f.write(port_json)
-    with open(os.path.join(DIST_GAME, 'paladog.port.json'), 'w', encoding='utf-8', newline='\n') as f:
-        f.write(port_json)
-    with open(os.path.join(DIST_GAME, 'gameinfo.xml'), 'w', encoding='utf-8', newline='\n') as f:
-        f.write(gameinfo_xml)
-    with open(os.path.join(DIST_GAME, 'README.md'), 'w', encoding='utf-8', newline='\n') as f:
-        f.write(readme_md)
-
-    generate_cover_and_screenshot()
-
-    # Also write metadata and images to DIST_ROOT for PortMaster-New repo structure
+    # Write metadata to DIST_ROOT (standard PortMaster layout)
     with open(os.path.join(DIST_ROOT, 'port.json'), 'w', encoding='utf-8', newline='\n') as f:
         f.write(port_json)
     with open(os.path.join(DIST_ROOT, 'gameinfo.xml'), 'w', encoding='utf-8', newline='\n') as f:
         f.write(gameinfo_xml)
     with open(os.path.join(DIST_ROOT, 'README.md'), 'w', encoding='utf-8', newline='\n') as f:
         f.write(readme_md)
-    shutil.copy2(os.path.join(DIST_GAME, 'cover.png'), os.path.join(DIST_ROOT, 'cover.png'))
-    shutil.copy2(os.path.join(DIST_GAME, 'screenshot.png'), os.path.join(DIST_ROOT, 'screenshot.png'))
 
-    # Prepare PortMaster-New staging repository structure:
-    # ports/paladog/
-    #   Paladog.sh
-    #   README.md
-    #   cover.png
-    #   screenshot.png
-    #   gameinfo.xml
-    #   port.json
-    #   paladog/
-    REPO_STAGE = os.path.join(NATIVE, 'dist', 'portmaster_repo', 'ports', 'paladog')
-    if os.path.exists(REPO_STAGE):
-        shutil.rmtree(REPO_STAGE)
-    os.makedirs(REPO_STAGE, exist_ok=True)
+    generate_cover_and_screenshot()
 
-    for fn in ['Paladog.sh', 'README.md', 'cover.png', 'screenshot.png', 'gameinfo.xml', 'port.json']:
-        shutil.copy2(os.path.join(DIST_ROOT, fn), os.path.join(REPO_STAGE, fn))
-    shutil.copytree(DIST_GAME, os.path.join(REPO_STAGE, 'paladog'))
-    print(f"[en] Prepared PortMaster-New repo directory: {REPO_STAGE}")
+    # Generate licenses folder inside DIST_GAME
+    lic_dir = os.path.join(DIST_GAME, 'licenses')
+    os.makedirs(lic_dir, exist_ok=True)
+    lic_paladog = """MIT License
+
+Copyright (c) 2026 hoangnq07
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+    lic_assets = """Original Paladog Game Assets & Audio
+Copyright (c) FazeCat (http://www.fazecat.com)
+
+Game assets, audio, graphics, and animations are property of FazeCat.
+Bundled for non-commercial preservation and personal entertainment as part of
+the community-driven open-source handheld port for PortMaster.
+"""
+    with open(os.path.join(NATIVE, 'assets', 'fonts', 'OFL.txt'), 'r', encoding='utf-8') as f:
+        lic_font = f.read()
+
+    with open(os.path.join(lic_dir, 'LICENSE.paladog.txt'), 'w', encoding='utf-8', newline='\n') as f:
+        f.write(lic_paladog)
+    with open(os.path.join(lic_dir, 'LICENSE.font.txt'), 'w', encoding='utf-8', newline='\n') as f:
+        f.write(lic_font)
+    with open(os.path.join(lic_dir, 'LICENSE.assets.txt'), 'w', encoding='utf-8', newline='\n') as f:
+        f.write(lic_assets)
+
+    # Clean any accidental .bak files
+    bak = os.path.join(DIST_GAME, 'assets', 'embed', 'logo_2.png.bak')
+    if os.path.exists(bak):
+        os.remove(bak)
 
     # 5. Zip PortMaster release (only Paladog.sh and paladog/ directory)
     zip_root = os.path.join(ROOT, 'Paladog_PortMaster_EN.zip')

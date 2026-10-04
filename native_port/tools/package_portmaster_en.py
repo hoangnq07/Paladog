@@ -249,7 +249,7 @@ def main():
 """
     readme_md = """## Notes
 
-Thanks to [FazeCat](http://www.fazecat.com) for the original Paladog game and assets.
+Thanks to [FazeCat](https://paladog.fandom.com) for creating Paladog, an engaging and charming side-scrolling defense game.
 Native C++ / SDL2 port by [hoangnq07](https://github.com/hoangnq07/Paladog).
 
 ## Controls
@@ -265,6 +265,7 @@ Native C++ / SDL2 port by [hoangnq07](https://github.com/hoangnq07/Paladog).
 | Y | Magic skill 2 (Mace 2) |
 | L1 / R1 | Cycle through available unit types |
 | Start | Pause game |
+| Select + Start | Exit game |
 
 ## Compile
 
@@ -274,6 +275,50 @@ cd Paladog/native_port
 make aarch64 LANG_EN=1
 ```
 """
+    testing_thread_txt = """Instructions to install the Testing Zip:
+Drop the .zip into your Portmaster autoinstall folder and run Portmaster.
+or
+run via ssh: harbourmaster install "https://github.com/hoangnq07/Paladog/releases/download/v1.0.0/paladog.zip"
+
+Game Information
+Title: Paladog
+URL: https://github.com/hoangnq07/Paladog
+
+Instructions:
+Ready to run! All required game assets are bundled.
+
+Controls:
+| Button | Action |
+|--|--|
+| D-Pad Left / Right | Move Paladog / Select unit in War Road |
+| D-Pad Up / Down | Change summoning lane in War Road |
+| Left Analog Stick | Move Paladog / Virtual cursor in menus |
+| A | Summon unit / Confirm in menus |
+| B | Magic skill 3 (Mace 3) / Cancel / Back |
+| X | Magic skill 1 (Mace 1) / Select in menus |
+| Y | Magic skill 2 (Mace 2) |
+| L1 / R1 | Cycle through available unit types |
+| Start | Pause game |
+| Select + Start | Exit game |
+
+CFW Tests:
+[X] ArkOS
+[ ] AmberELEC
+[ ] dArkOS
+[ ] muOS
+ROCKNIX
+-> [ ] Panfrost
+-> [ ] Libmali
+-> [ ] Adreno (Optional)
+[ ] Knulli
+[ ] Crossmix (Optional)
+
+Resolutions:
+[ ] 480x320 (Optional)
+[X] 640x480
+[ ] 720x720 (RGB30) (Optional)
+[ ] Higher resolutions (e.g., 1280x720)
+"""
     # Write metadata to DIST_ROOT (standard PortMaster layout)
     with open(os.path.join(DIST_ROOT, 'port.json'), 'w', encoding='utf-8', newline='\n') as f:
         f.write(port_json)
@@ -281,6 +326,11 @@ make aarch64 LANG_EN=1
         f.write(gameinfo_xml)
     with open(os.path.join(DIST_ROOT, 'README.md'), 'w', encoding='utf-8', newline='\n') as f:
         f.write(readme_md)
+    with open(os.path.join(DIST_ROOT, 'testing_thread.txt'), 'w', encoding='utf-8', newline='\n') as f:
+        f.write(testing_thread_txt)
+
+    # Copy updated Paladog.sh
+    shutil.copy2(os.path.join(NATIVE, 'package', 'Paladog.sh'), os.path.join(DIST_ROOT, 'Paladog.sh'))
 
     generate_cover_and_screenshot()
 
@@ -319,11 +369,17 @@ the community-driven open-source handheld port for PortMaster.
     with open(os.path.join(NATIVE, 'assets', 'fonts', 'OFL.txt'), 'r', encoding='utf-8') as f:
         lic_font = f.read()
 
-    with open(os.path.join(lic_dir, 'LICENSE.paladog.txt'), 'w', encoding='utf-8', newline='\n') as f:
+    # Clean old license filenames if present
+    for old_name in ['LICENSE.paladog.txt', 'LICENSE.font.txt', 'LICENSE.assets.txt']:
+        old_path = os.path.join(lic_dir, old_name)
+        if os.path.exists(old_path):
+            os.remove(old_path)
+
+    with open(os.path.join(lic_dir, 'LICENSE-paladog.txt'), 'w', encoding='utf-8', newline='\n') as f:
         f.write(lic_paladog)
-    with open(os.path.join(lic_dir, 'LICENSE.font.txt'), 'w', encoding='utf-8', newline='\n') as f:
+    with open(os.path.join(lic_dir, 'LICENSE-font.txt'), 'w', encoding='utf-8', newline='\n') as f:
         f.write(lic_font)
-    with open(os.path.join(lic_dir, 'LICENSE.assets.txt'), 'w', encoding='utf-8', newline='\n') as f:
+    with open(os.path.join(lic_dir, 'LICENSE-assets.txt'), 'w', encoding='utf-8', newline='\n') as f:
         f.write(lic_assets)
 
     # Clean any accidental .bak files

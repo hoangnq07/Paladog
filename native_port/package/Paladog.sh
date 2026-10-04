@@ -17,8 +17,9 @@ source $controlfolder/control.txt
 get_controls
 
 GAMEDIR="/$directory/ports/paladog"
+BINARY="paladog"
 
-cd "$GAMEDIR" || exit 1
+cd "$GAMEDIR"
 
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
 
@@ -32,8 +33,9 @@ bind_directories ~/.local/share/paladog "$GAMEDIR/conf"
 # Controller config
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 
-# Self-heal executable bit and launch
-pm_platform_helper "$GAMEDIR/paladog"
-"$GAMEDIR/paladog"
+# Launch game
+pm_platform_helper "$GAMEDIR/$BINARY"
+"./$BINARY"
 
 pm_finish
+

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Paladog (Viet hoa) - native port launcher for ArkOS / PortMaster (R36S etc.)
+# Paladog - native port launcher for PortMaster (ArkOS, AmberELEC, ROCKNIX, muOS, etc.)
 # Copy this file and the "paladog" folder into /roms/ports (or /roms2/ports).
 
 XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}

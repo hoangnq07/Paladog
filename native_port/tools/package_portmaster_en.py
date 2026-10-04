@@ -130,39 +130,24 @@ def patch_en_handheld_tutorials():
     print("[en] Patched English handheld tutorials (fdat_133).")
 
 def generate_cover_and_screenshot():
-    # 1. Screenshot: 640x480
-    sc_src = os.path.join(NATIVE, 'shots', 'stage3_wave1.png')
-    if not os.path.exists(sc_src):
-        # find any shot
-        shots = glob.glob(os.path.join(NATIVE, 'shots', '*.png'))
-        sc_src = shots[0] if shots else None
-
+    cov_src = os.path.join(NATIVE, 'shots', 'cover.png')
+    sc_src = os.path.join(NATIVE, 'shots', 'screenshot.png')
+    cov_dst = os.path.join(DIST_GAME, 'cover.png')
     sc_dst = os.path.join(DIST_GAME, 'screenshot.png')
-    if sc_src and os.path.exists(sc_src):
-        sim = Image.open(sc_src).convert('RGB')
-        sim = sim.resize((640, 480), Image.Resampling.LANCZOS)
-        sim.save(sc_dst, format='PNG', optimize=True)
+
+    if os.path.exists(sc_src):
+        shutil.copy2(sc_src, sc_dst)
     else:
-        # Create fallback 640x480
         sim = Image.new('RGB', (640, 480), (30, 20, 15))
         sim.save(sc_dst)
 
-    # 2. Cover: 480x640 (3:4 boxart) or square
-    cov_dst = os.path.join(DIST_GAME, 'cover.png')
-    cover = Image.new('RGB', (480, 640), (25, 18, 12))
-    logo_src = os.path.join(NATIVE, 'assets', 'embed', 'logo_0.png')
-    if os.path.exists(logo_src):
-        logo = Image.open(logo_src).convert('RGBA')
-        logo.thumbnail((440, 200), Image.Resampling.LANCZOS)
-        lx = (480 - logo.width) // 2
-        cover.paste(logo, (lx, 50), logo)
-    
-    # Paste screenshot in lower half of cover
-    if os.path.exists(sc_dst):
-        prev = Image.open(sc_dst).resize((420, 315), Image.Resampling.LANCZOS)
-        cover.paste(prev, (30, 280))
-    cover.save(cov_dst, format='PNG', optimize=True)
-    print("[en] Generated cover.png and screenshot.png.")
+    if os.path.exists(cov_src):
+        shutil.copy2(cov_src, cov_dst)
+    else:
+        cover = Image.new('RGB', (480, 640), (25, 18, 12))
+        cover.save(cov_dst)
+
+    print("[en] Deployed high-res cover.png and screenshot.png.")
 
 def main():
     print("=" * 60)
@@ -214,74 +199,123 @@ def main():
         f.write(sh_content)
 
     port_json = """{
-  "version": 2,
+  "version": 4,
   "name": "paladog.zip",
   "items": [
     "Paladog.sh",
     "paladog"
   ],
-  "items_opt": null,
+  "items_opt": [],
   "attr": {
     "title": "Paladog",
+    "porter": [
+      "hoangnq07"
+    ],
     "desc": "A classic side-scrolling strategy defense game. Lead animal critter armies to victory against demonic monster hordes!",
-    "inst": "Ready to play out of the box with built-in game data.",
+    "desc_md": null,
+    "inst": "Ready to run. Fully self-contained port with bundled original game assets.",
+    "inst_md": null,
     "genres": [
-      "Strategy",
-      "Action"
+      "strategy",
+      "action"
     ],
-    "portlibs": [
-      "libSDL2_image-2.0.so.0",
-      "libSDL2_mixer-2.0.so.0",
-      "libSDL2_ttf-2.0.so.0"
-    ],
-    "image": {
-      "screenshot": "screenshot.png",
-      "cover": "cover.png"
-    },
-    "rtr": false,
+    "image": null,
+    "rtr": true,
     "exp": false,
-    "runtime": null,
+    "runtime": [],
+    "store": [],
+    "availability": "full",
     "reqs": [],
     "arch": [
       "aarch64"
-    ]
+    ],
+    "min_glibc": ""
   }
 }
 """
-    with open(os.path.join(DIST_GAME, 'port.json'), 'w', encoding='utf-8', newline='\n') as f:
-        f.write(port_json)
-
+    gameinfo_xml = """<?xml version="1.0" encoding="utf-8"?>
+<gameList>
+  <game>
+    <path>./Paladog.sh</path>
+    <name>Paladog</name>
+    <desc>A classic side-scrolling strategy defense game. Lead animal critter armies to victory against demonic monster hordes!</desc>
+    <releasedate>20110201T000000</releasedate>
+    <developer>FazeCat</developer>
+    <publisher>FazeCat</publisher>
+    <genre>Strategy, Action</genre>
+    <image>./paladog/cover.png</image>
+  </game>
+</gameList>
+"""
     readme_md = """# Paladog (English PortMaster Release)
 
 Native C++ / SDL2 port of the classic strategy defense game **Paladog** by FazeCat.
 
 ## Handheld Controls:
-- **D-Pad Left / Right**: Move Paladog
-- **D-Pad Up / Down**: Change summoning lane (War Road / Defense mode)
+- **D-Pad Left / Right**: Move Paladog (Normal stage) / Select unit (War Road mode)
+- **D-Pad Up / Down**: Change summoning lane (War Road mode)
 - **Button A**: Summon selected unit / Confirm in menus
-- **Button B**: Cancel / Back
-- **Button X**: Magic skill 1 (Mace 1) / Upgrade in store
+- **Button B**: Magic skill 3 (Mace 3) / Cancel / Back
+- **Button X**: Magic skill 1 (Mace 1) / Select in menus
 - **Button Y**: Magic skill 2 (Mace 2)
-- **Button B**: Magic skill 3 (Mace 3)
 - **L1 / R1**: Cycle through available unit types
 - **Start**: Pause game
 
 ## Installation:
 Extract `Paladog.sh` and the `paladog/` folder into `/roms/ports/` (or `/roms2/ports/`) on your handheld SD card.
 """
+    # Write metadata to DIST_GAME
+    with open(os.path.join(DIST_GAME, 'port.json'), 'w', encoding='utf-8', newline='\n') as f:
+        f.write(port_json)
+    with open(os.path.join(DIST_GAME, 'paladog.port.json'), 'w', encoding='utf-8', newline='\n') as f:
+        f.write(port_json)
+    with open(os.path.join(DIST_GAME, 'gameinfo.xml'), 'w', encoding='utf-8', newline='\n') as f:
+        f.write(gameinfo_xml)
     with open(os.path.join(DIST_GAME, 'README.md'), 'w', encoding='utf-8', newline='\n') as f:
         f.write(readme_md)
 
     generate_cover_and_screenshot()
 
-    # 5. Zip PortMaster release
+    # Also write metadata and images to DIST_ROOT for PortMaster-New repo structure
+    with open(os.path.join(DIST_ROOT, 'port.json'), 'w', encoding='utf-8', newline='\n') as f:
+        f.write(port_json)
+    with open(os.path.join(DIST_ROOT, 'gameinfo.xml'), 'w', encoding='utf-8', newline='\n') as f:
+        f.write(gameinfo_xml)
+    with open(os.path.join(DIST_ROOT, 'README.md'), 'w', encoding='utf-8', newline='\n') as f:
+        f.write(readme_md)
+    shutil.copy2(os.path.join(DIST_GAME, 'cover.png'), os.path.join(DIST_ROOT, 'cover.png'))
+    shutil.copy2(os.path.join(DIST_GAME, 'screenshot.png'), os.path.join(DIST_ROOT, 'screenshot.png'))
+
+    # Prepare PortMaster-New staging repository structure:
+    # ports/paladog/
+    #   Paladog.sh
+    #   README.md
+    #   cover.png
+    #   screenshot.png
+    #   gameinfo.xml
+    #   port.json
+    #   paladog/
+    REPO_STAGE = os.path.join(NATIVE, 'dist', 'portmaster_repo', 'ports', 'paladog')
+    if os.path.exists(REPO_STAGE):
+        shutil.rmtree(REPO_STAGE)
+    os.makedirs(REPO_STAGE, exist_ok=True)
+
+    for fn in ['Paladog.sh', 'README.md', 'cover.png', 'screenshot.png', 'gameinfo.xml', 'port.json']:
+        shutil.copy2(os.path.join(DIST_ROOT, fn), os.path.join(REPO_STAGE, fn))
+    shutil.copytree(DIST_GAME, os.path.join(REPO_STAGE, 'paladog'))
+    print(f"[en] Prepared PortMaster-New repo directory: {REPO_STAGE}")
+
+    # 5. Zip PortMaster release (only Paladog.sh and paladog/ directory)
     zip_root = os.path.join(ROOT, 'Paladog_PortMaster_EN.zip')
     zip_dist = os.path.join(NATIVE, 'dist', 'Paladog_PortMaster_EN.zip')
     zip_pm = os.path.join(NATIVE, 'dist', 'paladog.zip')
     print("Creating PortMaster ZIP archives...")
     for zpath in [zip_root, zip_dist, zip_pm]:
         with zipfile.ZipFile(zpath, 'w', zipfile.ZIP_DEFLATED, compresslevel=6) as zf:
-            for r, _, files in os.walk(DIST_ROOT):
+            # Add Paladog.sh
+            zf.write(os.path.join(DIST_ROOT, 'Paladog.sh'), 'Paladog.sh')
+            # Add paladog folder
+            for r, _, files in os.walk(DIST_GAME):
                 for f in files:
                     fp = os.path.join(r, f)
                     rel = os.path.relpath(fp, DIST_ROOT)

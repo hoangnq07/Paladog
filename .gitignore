@@ -20,10 +20,14 @@ __pycache__/
 *.log
 
 # Test runs & scratch folders
-native_port/shots/
+native_port/shots/*
+!native_port/shots/cover.png
+!native_port/shots/screenshot.png
 native_port/scratch/
 extracted/temp_inspect/
 extracted/orig_scripts/
+extracted/subs/
+tools/
 
 # OS and IDE files
 .DS_Store

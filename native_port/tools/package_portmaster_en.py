@@ -180,25 +180,20 @@ def main():
         shutil.copy2(raw_bin, out_bin)
     print(f"paladog binary ready: {os.path.getsize(out_bin)/(1024*1024):.2f} MB")
 
-    # 3. Setup Non-RTR base assets (fonts and embed logos only)
-    shutil.copytree(os.path.join(NATIVE, 'assets', 'embed'), os.path.join(ASSETS_OUT, 'embed'))
-    shutil.copytree(os.path.join(NATIVE, 'assets', 'fonts'), os.path.join(ASSETS_OUT, 'fonts'))
+    # 3. Setup Non-RTR base assets (only open-source font, zero copyrighted assets)
+    fonts_out = os.path.join(ASSETS_OUT, 'fonts')
+    os.makedirs(fonts_out, exist_ok=True)
+    shutil.copy2(os.path.join(NATIVE, 'assets', 'fonts', 'BeVietnamPro-Bold.ttf'), os.path.join(fonts_out, 'BeVietnamPro-Bold.ttf'))
 
     # Setup tools/ directory with extract_swf.py
     tools_dir = os.path.join(DIST_GAME, 'tools')
     os.makedirs(tools_dir, exist_ok=True)
     shutil.copy2(os.path.join(NATIVE, 'tools', 'extract_swf.py'), os.path.join(tools_dir, 'extract_swf.py'))
 
-    # Setup patch/ directory for handheld HUD/tutorial textures
-    patch_dir = os.path.join(DIST_GAME, 'patch')
-    os.makedirs(patch_dir, exist_ok=True)
-    shutil.copy2(os.path.join(NATIVE, 'package', 'patch', 'fdat_143.png'), os.path.join(patch_dir, 'fdat_143.png'))
-    shutil.copy2(os.path.join(NATIVE, 'package', 'patch', 'fdat_133.png'), os.path.join(patch_dir, 'fdat_133.png'))
-
     # Setup gamedata placeholder
     gamedata_dir = os.path.join(DIST_GAME, 'gamedata')
     os.makedirs(gamedata_dir, exist_ok=True)
-    with open(os.path.join(gamedata_dir, 'place_Paladog.swf_here.txt'), 'w', encoding='utf-8') as f:
+    with open(os.path.join(gamedata_dir, 'place_Paladog.swf_here.txt'), 'w', encoding='utf-8', newline='\n') as f:
         f.write("Place original Paladog.swf here (approx. 19.5MB, search on archive.org or Flashpoint).\nAssets are extracted automatically on first launch.\n")
 
     # 4. PortMaster scripts & metadata

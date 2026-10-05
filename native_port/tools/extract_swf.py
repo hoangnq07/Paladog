@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Paladog SWF Asset Extractor for PortMaster
-Extracts atlases, sounds, animations, and database files directly from Paladog.swf.
+Extracts atlases, sounds, animations, database files, and embed logos directly from Paladog.swf.
 Uses ONLY Python standard library (zlib, struct, os, sys, re, shutil).
 Zero third-party dependencies.
 """
@@ -12,6 +12,15 @@ import zlib
 import struct
 import re
 import shutil
+
+def _make_png(w, h, rows):
+    def chunk(tag, payload):
+        crc = zlib.crc32(tag + payload) & 0xffffffff
+        return struct.pack('>I', len(payload)) + tag + payload + struct.pack('>I', crc)
+    ihdr = struct.pack('>IIBBBBB', w, h, 8, 6, 0, 0, 0)
+    raw_scanlines = b''.join(b'\x00' + row for row in rows)
+    idat = zlib.compress(raw_scanlines, 6)
+    return b'\x89PNG\r\n\x1a\n' + chunk(b'IHDR', ihdr) + chunk(b'IDAT', idat) + chunk(b'IEND', b'')
 
 def extract_paladog_swf(swf_path, out_assets_dir, patch_dir=None):
     if not os.path.isfile(swf_path):
@@ -60,7 +69,7 @@ def extract_paladog_swf(swf_path, out_assets_dir, patch_dir=None):
                 name = body[cur:end].decode('latin1')
                 cur = end + 1
                 symbols[tid] = name
-        elif t in (87, 14):  # DefineBinaryData (87), DefineSound (14)
+        elif t in (87, 14, 36):  # DefineBinaryData (87), DefineSound (14), DefineBitsLossless2 (36)
             tags.append((t, pos, l))
 
         pos += l
@@ -71,16 +80,25 @@ def extract_paladog_swf(swf_path, out_assets_dir, patch_dir=None):
     audio_dir = os.path.join(out_assets_dir, 'audio')
     data_dir = os.path.join(out_assets_dir, 'data')
     anim_dir = os.path.join(out_assets_dir, 'anim')
+    embed_dir = os.path.join(out_assets_dir, 'embed')
 
     os.makedirs(atlases_dir, exist_ok=True)
     os.makedirs(audio_dir, exist_ok=True)
     os.makedirs(data_dir, exist_ok=True)
     os.makedirs(anim_dir, exist_ok=True)
+    os.makedirs(embed_dir, exist_ok=True)
 
     fdat_cnt = 0
     snd_cnt = 0
     db_cnt = 0
     ani_cnt = 0
+    logo_cnt = 0
+
+    target_logos = {
+        'com.fazecat.web.paladog.Library_Logo00Img': 'logo_0.png',
+        'com.fazecat.web.paladog.Library_Logo01Img': 'logo_1.png',
+        'com.fazecat.web.paladog.Library_Logo02Img': 'logo_2.png',
+    }
 
     # Pass 2: Extract assets
     for t, p, l in tags:
@@ -145,7 +163,36 @@ def extract_paladog_swf(swf_path, out_assets_dir, patch_dir=None):
                 snd_cnt += 1
                 continue
 
-    print(f"Extraction summary: {fdat_cnt} atlases, {snd_cnt} sounds, {db_cnt} DB files, {ani_cnt} animations.")
+        elif t == 36:  # DefineBitsLossless2 (Embed Logos)
+            if sym in target_logos:
+                fname = target_logos[sym]
+                w, h = struct.unpack('<HH', body[p+3:p+7])
+                decomp = zlib.decompress(body[p+7:p+l])
+                rows = []
+                for y in range(h):
+                    row = bytearray(w * 4)
+                    sl = decomp[y*w*4 : (y+1)*w*4]
+                    for x in range(w):
+                        a = sl[x*4]
+                        r = sl[x*4+1]
+                        g = sl[x*4+2]
+                        b = sl[x*4+3]
+                        if 0 < a < 255:
+                            r = min(255, int(r * 255 / a))
+                            g = min(255, int(g * 255 / a))
+                            b = min(255, int(b * 255 / a))
+                        row[x*4] = r
+                        row[x*4+1] = g
+                        row[x*4+2] = b
+                        row[x*4+3] = a
+                    rows.append(bytes(row))
+                png_bytes = _make_png(w, h, rows)
+                with open(os.path.join(embed_dir, fname), 'wb') as out_f:
+                    out_f.write(png_bytes)
+                logo_cnt += 1
+                continue
+
+    print(f"Extraction summary: {fdat_cnt} atlases, {snd_cnt} sounds, {db_cnt} DB files, {ani_cnt} animations, {logo_cnt} logos.")
 
     # Apply custom handheld patches if provided
     if patch_dir and os.path.isdir(patch_dir):
@@ -159,7 +206,7 @@ def extract_paladog_swf(swf_path, out_assets_dir, patch_dir=None):
         if patched_count > 0:
             print(f"Applied {patched_count} handheld patch files from {patch_dir}.")
 
-    return fdat_cnt > 0 and db_cnt > 0
+    return fdat_cnt > 0 and db_cnt > 0 and logo_cnt > 0
 
 def main():
     if len(sys.argv) < 3:

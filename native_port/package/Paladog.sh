@@ -54,7 +54,7 @@ if [ ! -f "$GAMEDIR/assets/data/db_0.bin" ] || [ ! -f "$GAMEDIR/assets/atlases/f
                 PYTHON_BIN="python"
             fi
         fi
-        $PYTHON_BIN "$GAMEDIR/tools/extract_swf.py" "$SWF_FILE" "$GAMEDIR/assets" "$GAMEDIR/patch"
+        $PYTHON_BIN "$GAMEDIR/tools/extract_swf.py" "$SWF_FILE" "$GAMEDIR/assets"
         if [ ! -f "$GAMEDIR/assets/data/db_0.bin" ]; then
             pm_message "Extraction failed. Please check Paladog.swf file."
             sleep 5

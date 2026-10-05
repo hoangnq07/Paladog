@@ -180,15 +180,26 @@ def main():
         shutil.copy2(raw_bin, out_bin)
     print(f"paladog binary ready: {os.path.getsize(out_bin)/(1024*1024):.2f} MB")
 
-    # 3. Export English assets
-    shutil.copytree(os.path.join(NATIVE, 'assets', 'anim'), os.path.join(ASSETS_OUT, 'anim'))
-    shutil.copytree(os.path.join(NATIVE, 'assets', 'audio'), os.path.join(ASSETS_OUT, 'audio'))
+    # 3. Setup Non-RTR base assets (fonts and embed logos only)
     shutil.copytree(os.path.join(NATIVE, 'assets', 'embed'), os.path.join(ASSETS_OUT, 'embed'))
     shutil.copytree(os.path.join(NATIVE, 'assets', 'fonts'), os.path.join(ASSETS_OUT, 'fonts'))
-    export_english_data()
-    export_english_atlases()
-    patch_en_handheld_hud()
-    patch_en_handheld_tutorials()
+
+    # Setup tools/ directory with extract_swf.py
+    tools_dir = os.path.join(DIST_GAME, 'tools')
+    os.makedirs(tools_dir, exist_ok=True)
+    shutil.copy2(os.path.join(NATIVE, 'tools', 'extract_swf.py'), os.path.join(tools_dir, 'extract_swf.py'))
+
+    # Setup patch/ directory for handheld HUD/tutorial textures
+    patch_dir = os.path.join(DIST_GAME, 'patch')
+    os.makedirs(patch_dir, exist_ok=True)
+    shutil.copy2(os.path.join(NATIVE, 'package', 'patch', 'fdat_143.png'), os.path.join(patch_dir, 'fdat_143.png'))
+    shutil.copy2(os.path.join(NATIVE, 'package', 'patch', 'fdat_133.png'), os.path.join(patch_dir, 'fdat_133.png'))
+
+    # Setup gamedata placeholder
+    gamedata_dir = os.path.join(DIST_GAME, 'gamedata')
+    os.makedirs(gamedata_dir, exist_ok=True)
+    with open(os.path.join(gamedata_dir, 'place_Paladog.swf_here.txt'), 'w', encoding='utf-8') as f:
+        f.write("Place original Paladog.swf here (approx. 19.5MB, search on archive.org or Flashpoint).\nAssets are extracted automatically on first launch.\n")
 
     # 4. PortMaster scripts & metadata
     sh_src = os.path.join(NATIVE, 'package', 'Paladog.sh')
@@ -213,18 +224,18 @@ def main():
     ],
     "desc": "A classic side-scrolling strategy defense game. Lead animal critter armies to victory against demonic monster hordes!",
     "desc_md": null,
-    "inst": "Ready to run. Fully self-contained port with bundled original game assets.",
-    "inst_md": null,
+    "inst": "Obtain Paladog.swf (search on archive.org or Flashpoint, approx. 19.5MB) and place it into paladog/gamedata/. The port will automatically extract game assets on first launch.",
+    "inst_md": "Obtain **Paladog.swf** (search on [archive.org](https://archive.org/search?query=paladog+swf) or Flashpoint, approx. 19.5MB) and place it into the `paladog/gamedata/` folder. The port will automatically extract game assets on first launch.",
     "genres": [
       "strategy",
       "action"
     ],
     "image": null,
-    "rtr": true,
+    "rtr": false,
     "exp": false,
     "runtime": [],
     "store": [],
-    "availability": "full",
+    "availability": "free",
     "reqs": [],
     "arch": [
       "aarch64"
@@ -251,6 +262,12 @@ def main():
 
 Thanks to [FazeCat](https://paladog.fandom.com) for creating Paladog, an engaging and charming side-scrolling defense game.
 Native C++ / SDL2 port by [hoangnq07](https://github.com/hoangnq07/Paladog).
+
+## Installation
+
+1. Obtain a copy of `Paladog.swf` (approx. 19.5MB, search on [archive.org](https://archive.org/search?query=paladog+swf) or Flashpoint).
+2. Place `Paladog.swf` into the `paladog/gamedata/` directory.
+3. Launch Paladog. The port will automatically extract and configure game assets on first launch.
 
 ## Controls
 
@@ -285,7 +302,7 @@ Title: Paladog
 URL: https://github.com/hoangnq07/Paladog
 
 Instructions:
-Ready to run! All required game assets are bundled.
+Place Paladog.swf into paladog/gamedata/. The port will automatically extract game assets on first launch!
 
 Controls:
 | Button | Action |
@@ -329,12 +346,9 @@ Resolutions:
     with open(os.path.join(DIST_ROOT, 'testing_thread.txt'), 'w', encoding='utf-8', newline='\n') as f:
         f.write(testing_thread_txt)
 
-    # Copy updated Paladog.sh
-    shutil.copy2(os.path.join(NATIVE, 'package', 'Paladog.sh'), os.path.join(DIST_ROOT, 'Paladog.sh'))
-
     generate_cover_and_screenshot()
 
-    # Generate licenses folder inside DIST_GAME
+    # Generate licenses folder inside DIST_GAME (Open-source licenses only)
     lic_dir = os.path.join(DIST_GAME, 'licenses')
     os.makedirs(lic_dir, exist_ok=True)
     lic_paladog = """MIT License
@@ -359,18 +373,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-    lic_assets = """Original Paladog Game Assets & Audio
-Copyright (c) FazeCat (http://www.fazecat.com)
-
-Game assets, audio, graphics, and animations are property of FazeCat.
-Bundled for non-commercial preservation and personal entertainment as part of
-the community-driven open-source handheld port for PortMaster.
-"""
     with open(os.path.join(NATIVE, 'assets', 'fonts', 'OFL.txt'), 'r', encoding='utf-8') as f:
         lic_font = f.read()
 
-    # Clean old license filenames if present
-    for old_name in ['LICENSE.paladog.txt', 'LICENSE.font.txt', 'LICENSE.assets.txt']:
+    # Clean old license filenames
+    for old_name in ['LICENSE.paladog.txt', 'LICENSE.font.txt', 'LICENSE.assets.txt', 'LICENSE-assets.txt']:
         old_path = os.path.join(lic_dir, old_name)
         if os.path.exists(old_path):
             os.remove(old_path)
@@ -379,19 +386,17 @@ the community-driven open-source handheld port for PortMaster.
         f.write(lic_paladog)
     with open(os.path.join(lic_dir, 'LICENSE-font.txt'), 'w', encoding='utf-8', newline='\n') as f:
         f.write(lic_font)
-    with open(os.path.join(lic_dir, 'LICENSE-assets.txt'), 'w', encoding='utf-8', newline='\n') as f:
-        f.write(lic_assets)
 
     # Clean any accidental .bak files
     bak = os.path.join(DIST_GAME, 'assets', 'embed', 'logo_2.png.bak')
     if os.path.exists(bak):
         os.remove(bak)
 
-    # 5. Zip PortMaster release (only Paladog.sh and paladog/ directory)
+    # 5. Zip PortMaster release (Non-RTR: Paladog.sh and paladog/ directory without copyrighted assets)
     zip_root = os.path.join(ROOT, 'Paladog_PortMaster_EN.zip')
     zip_dist = os.path.join(NATIVE, 'dist', 'Paladog_PortMaster_EN.zip')
     zip_pm = os.path.join(NATIVE, 'dist', 'paladog.zip')
-    print("Creating PortMaster ZIP archives...")
+    print("Creating PortMaster Non-RTR ZIP archive...")
     for zpath in [zip_root, zip_dist, zip_pm]:
         with zipfile.ZipFile(zpath, 'w', zipfile.ZIP_DEFLATED, compresslevel=6) as zf:
             # Add Paladog.sh
@@ -402,9 +407,10 @@ the community-driven open-source handheld port for PortMaster.
                     fp = os.path.join(r, f)
                     rel = os.path.relpath(fp, DIST_ROOT)
                     zf.write(fp, rel)
-        print(f"  -> {zpath} ({os.path.getsize(zpath)/(1024*1024):.1f} MB)")
+        print(f"  -> {zpath} ({os.path.getsize(zpath)/(1024*1024):.2f} MB)")
 
-    print("\nPortMaster English build completed successfully!")
+    print("\nPortMaster Non-RTR package completed successfully!")
 
 if __name__ == '__main__':
     main()
+

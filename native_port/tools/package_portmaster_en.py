@@ -180,10 +180,10 @@ def main():
         shutil.copy2(raw_bin, out_bin)
     print(f"paladog binary ready: {os.path.getsize(out_bin)/(1024*1024):.2f} MB")
 
-    # 3. Setup Non-RTR base assets (only open-source font, zero copyrighted assets)
+    # 3. Setup Non-RTR base assets (standard open-source font, zero copyrighted assets)
     fonts_out = os.path.join(ASSETS_OUT, 'fonts')
     os.makedirs(fonts_out, exist_ok=True)
-    shutil.copy2(os.path.join(NATIVE, 'assets', 'fonts', 'BeVietnamPro-Bold.ttf'), os.path.join(fonts_out, 'BeVietnamPro-Bold.ttf'))
+    shutil.copy2(os.path.join(NATIVE, 'assets', 'fonts', 'BeVietnamPro-Bold.ttf'), os.path.join(fonts_out, 'font.ttf'))
 
     # Setup tools/ directory with extract_swf.py
     tools_dir = os.path.join(DIST_GAME, 'tools')
@@ -194,7 +194,7 @@ def main():
     gamedata_dir = os.path.join(DIST_GAME, 'gamedata')
     os.makedirs(gamedata_dir, exist_ok=True)
     with open(os.path.join(gamedata_dir, 'place_Paladog.swf_here.txt'), 'w', encoding='utf-8', newline='\n') as f:
-        f.write("Place original Paladog.swf here (approx. 19.5MB, search on archive.org or Flashpoint).\nAssets are extracted automatically on first launch.\n")
+        f.write("Place original Paladog.swf here (approx. 19.5MB).\nAssets are extracted automatically on first launch.\n")
 
     # 4. PortMaster scripts & metadata
     sh_src = os.path.join(NATIVE, 'package', 'Paladog.sh')
@@ -219,8 +219,8 @@ def main():
     ],
     "desc": "A classic side-scrolling strategy defense game. Lead animal critter armies to victory against demonic monster hordes!",
     "desc_md": null,
-    "inst": "Obtain Paladog.swf (search on archive.org or Flashpoint, approx. 19.5MB) and place it into paladog/gamedata/. The port will automatically extract game assets on first launch.",
-    "inst_md": "Obtain **Paladog.swf** (search on [archive.org](https://archive.org/search?query=paladog+swf) or Flashpoint, approx. 19.5MB) and place it into the `paladog/gamedata/` folder. The port will automatically extract game assets on first launch.",
+    "inst": "Place your own copy of Paladog.swf (approx. 19.5MB) into paladog/gamedata/. The port will automatically extract game assets on first launch.",
+    "inst_md": "Place your own copy of **Paladog.swf** (approx. 19.5MB) into the `paladog/gamedata/` folder. The port will automatically extract game assets on first launch.",
     "genres": [
       "strategy",
       "action"
@@ -260,7 +260,7 @@ Native C++ / SDL2 port by [hoangnq07](https://github.com/hoangnq07/Paladog).
 
 ## Installation
 
-1. Obtain a copy of `Paladog.swf` (approx. 19.5MB, search on [archive.org](https://archive.org/search?query=paladog+swf) or Flashpoint).
+1. Obtain a copy of `Paladog.swf` (approx. 19.5MB).
 2. Place `Paladog.swf` into the `paladog/gamedata/` directory.
 3. Launch Paladog. The port will automatically extract and configure game assets on first launch.
 
@@ -338,8 +338,6 @@ Resolutions:
         f.write(gameinfo_xml)
     with open(os.path.join(DIST_ROOT, 'README.md'), 'w', encoding='utf-8', newline='\n') as f:
         f.write(readme_md)
-    with open(os.path.join(DIST_ROOT, 'testing_thread.txt'), 'w', encoding='utf-8', newline='\n') as f:
-        f.write(testing_thread_txt)
 
     generate_cover_and_screenshot()
 

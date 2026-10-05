@@ -170,11 +170,21 @@ int main(int argc, char** argv) {
     SDL_Log("Assets: %s", assets.c_str());
 
     Gfx gfx;
-    if (!gfx.init("Paladog (Viá»‡t hoÃ¡)", 760, 570, opt.fullscreen)) return 1;
+#if defined(PALADOG_LANG_EN)
+    if (!gfx.init("Paladog", 760, 570, opt.fullscreen)) return 1;
+#else
+    if (!gfx.init("Paladog (Việt hoá)", 760, 570, opt.fullscreen)) return 1;
+#endif
     Audio audio;
     audio.init(kLibrary::MAXSIZE_EFFECTCHANNEL);
     TextCache text;
-    text.init(&gfx, assets + "fonts/BeVietnamPro-Bold.ttf");
+    std::string fontPath = assets + "fonts/font.ttf";
+    if (FILE* f = std::fopen(fontPath.c_str(), "rb")) {
+        std::fclose(f);
+    } else {
+        fontPath = assets + "fonts/BeVietnamPro-Bold.ttf";
+    }
+    text.init(&gfx, fontPath);
 
     SDL_GameController* pad = nullptr;
     for (int i = 0; i < SDL_NumJoysticks() && !pad; ++i)

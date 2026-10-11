@@ -29,11 +29,22 @@ CÀI ĐẶT
      - [B] hoặc [L1]: Quay lại Bản Đồ (Map)
      - [R1]: Chuyển sang Cửa Hàng
 
-  4. Bản đồ & Menu & Cốt truyện & Hướng dẫn:
+  4. Màn hình Cửa Hàng (Store) - Bán / Mua không cần chuột:
+     - Ô đồ đang chọn có VIỀN VÀNG (túi đồ) hoặc VIỀN XANH (kệ shop) PHÁT SÁNG
+     - D-Pad ◄ ►: Duyệt chọn từng món đồ (tự động cuộn trang túi đồ mượt mà)
+     - D-Pad ▲: Chuyển chọn lên kệ hàng Cửa Hàng
+     - D-Pad ▼: Chuyển chọn xuống Túi đồ của bạn
+     - [X] hoặc [A]: BÁN hoặc MUA nhanh món đồ đang chọn (bấm [X] liên tục để bán dọn túi cực nhanh)
+     - [Y]: Tự động gom & Sắp xếp túi đồ (Sort)
+     - L2 / R2: Lật trang trước / sau trong túi đồ
+     - [L1] / [R1]: Chuyển sang Nâng Cấp Lính / Trang Bị Anh Hùng
+     - [B]: Quay lại Bản Đồ (Map)
+
+  5. Bản đồ & Menu & Cốt truyện & Qua Màn Boss (Chapter Clear):
      - D-Pad / Cần Analog: Di chuyển con trỏ chuột ảo (L1: chậm, R1: nhanh)
      - [A]: Chuột trái (chọn màn chơi, bấm nút)
-     - [A] / [X] / [START]: Chuyển tiếp trang hướng dẫn & đối thoại cốt truyện
-     - [B]: Quay lại / Hủy bỏ
+     - [A] / [START] / [X]: Tiếp tục qua màn hình Chapter Clear & Cutscene truyện tranh & Ảnh kết thúc chương
+     - [B]: Bỏ qua (Skip) truyện tranh / Quay lại
      - [X]: Mở nhanh Nâng Cấp Lính (tại màn hình Bản Đồ)
 
 LƯU GAME

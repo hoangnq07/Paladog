@@ -102,6 +102,9 @@ struct Pad {
     int stickDir = 0;                         // -1 left, 1 right
     bool trig[2] = {false, false};            // L2 / R2 held
     bool kLeft = false, kRight = false, kUp = false, kDown = false; // keyboard arrow keys
+    int storeFocus = 1;                       // 0: Store shelf, 1: Inventory
+    int lastSoldInvenPos = -1;
+    bool wasSellingInven = false;
     Pad() {
         for (int& k : sentKey) k = -1;
     }
@@ -278,7 +281,28 @@ int main(int argc, char** argv) {
                                 if (e.key.keysym.sym == SDLK_RETURN || e.key.keysym.sym == SDLK_SPACE ||
                                     e.key.keysym.sym == SDLK_a || e.key.keysym.sym == SDLK_z || e.key.keysym.sym == SDLK_j) {
                                     if (game.nGameScene == 0) {
-                                        game.nGameFrame = 120;
+                                        if (game.player && game.player->nNowPlayChapter < 4) {
+                                            if (game.nGameFrame < 119) {
+                                                game.nGameFrame = 120;
+                                            } else {
+                                                game.bChapterClearSnd = false;
+                                                game.bEventSkipBtn = false;
+                                                game.bEventNextBtn = false;
+                                                game.nEventScene = 0;
+                                                game.nEventFrame = 0;
+                                                game.nEventSoundCount = 0;
+                                                ++game.nGameScene;
+                                                game.nDialogStep = 0;
+                                                game.lib->playEffect(15);
+                                                if (game.player->nNowPlayChapter == 3) {
+                                                    game.lib->playMusic(kLibrary::MUSIC_TITLE, true);
+                                                } else {
+                                                    game.lib->playMusic(kLibrary::MUSIC_STAGE, true);
+                                                }
+                                            }
+                                        } else {
+                                            ++game.nGameScene;
+                                        }
                                     } else {
                                         game.bEventNextBtn = true;
                                         game.bActive = true;
@@ -288,6 +312,13 @@ int main(int argc, char** argv) {
                                     game.bEventSkipBtn = true;
                                     game.bActive = true;
                                     game.lib->playEffect(15);
+                                }
+                            } else if (game.nMainState == kDrawing::MAIN_AD) {
+                                if (e.key.keysym.sym == SDLK_RETURN || e.key.keysym.sym == SDLK_SPACE ||
+                                    e.key.keysym.sym == SDLK_a || e.key.keysym.sym == SDLK_z || e.key.keysym.sym == SDLK_j ||
+                                    e.key.keysym.sym == SDLK_ESCAPE) {
+                                    game.lib->playEffect(15);
+                                    game.bOkBtn = true;
                                 }
                             } else if (game.nMainState == kDrawing::MAIN_STAGESELECT && game.nMainScene >= 1000) {
                                 if (e.key.keysym.sym == SDLK_RETURN || e.key.keysym.sym == SDLK_SPACE ||
@@ -487,7 +518,8 @@ int main(int argc, char** argv) {
                             (game.nMainState == kDrawing::MAIN_INTRO) ||
                             (game.nMainState == kDrawing::MAIN_USEAGE) ||
                             (game.nMainState == kDrawing::MAIN_TITLE) ||
-                            (game.nMainState == kDrawing::MAIN_STAGESELECT && game.nMainScene >= 1000);
+                            (game.nMainState == kDrawing::MAIN_AD) ||
+                            (game.nMainState == kDrawing::MAIN_STAGESELECT && (game.nMainScene >= 1000 || game.nMainScene == 200 || game.nMainScene == 300));
                         if (!isFullPadScreen) pd.cursor = true;
                         auto send = [&](int key) {
                             game.keyDown(key);
@@ -613,8 +645,148 @@ int main(int argc, char** argv) {
                                 }
                                 break;
                             } else if (game.nMainScene == 300) {
-                                // Store
+                                // Store: Gamepad navigation & quick sell/buy without mouse
+                                auto autoSelectInven = [&](int startPos, int dir) {
+                                    if (!game.player) return;
+                                    int best = -1;
+                                    if (dir == 0) {
+                                        if (startPos >= 0 && startPos < kPlayer::INVENDATA_LEVELPOS &&
+                                            game.player->INVENDATA.get(startPos).num() > kDrawing::INITDATA) {
+                                            best = startPos;
+                                        } else {
+                                            for (int i = startPos + 1; i < kPlayer::INVENDATA_LEVELPOS; ++i) {
+                                                if (game.player->INVENDATA.get(i).num() > kDrawing::INITDATA) { best = i; break; }
+                                            }
+                                            if (best == -1) {
+                                                for (int i = startPos - 1; i >= 0; --i) {
+                                                    if (game.player->INVENDATA.get(i).num() > kDrawing::INITDATA) { best = i; break; }
+                                                }
+                                            }
+                                            if (best == -1) {
+                                                for (int i = 0; i < kPlayer::INVENDATA_LEVELPOS; ++i) {
+                                                    if (game.player->INVENDATA.get(i).num() > kDrawing::INITDATA) { best = i; break; }
+                                                }
+                                            }
+                                        }
+                                    } else if (dir > 0) {
+                                        for (int i = startPos + 1; i < kPlayer::INVENDATA_LEVELPOS; ++i) {
+                                            if (game.player->INVENDATA.get(i).num() > kDrawing::INITDATA) { best = i; break; }
+                                        }
+                                    } else {
+                                        for (int i = startPos - 1; i >= 0; --i) {
+                                            if (game.player->INVENDATA.get(i).num() > kDrawing::INITDATA) { best = i; break; }
+                                        }
+                                    }
+                                    if (best != -1) {
+                                        game.nInvenItemSelectPos = best;
+                                        game.bInvenItemSelect = true;
+                                        game.bStoreItemSelect = false;
+                                        game.player->nInvenPosX = -(best / 9) * (74 * 9);
+                                        if (game.player->nInvenPosX > kPlayer::INVEN_STARTPOS) game.player->nInvenPosX = kPlayer::INVEN_STARTPOS;
+                                        if (game.player->nInvenPosX < -kPlayer::INVEN_ENDPOS) game.player->nInvenPosX = -kPlayer::INVEN_ENDPOS;
+                                        game.nPigDialogStep = 1;
+                                        game.nPigDialogFrame = 0;
+                                        pd.storeFocus = 1;
+                                        pd.cursor = false;
+                                        game.lib->playEffect(15);
+                                    }
+                                };
+
+                                auto autoSelectStore = [&](int startPos, int dir) {
+                                    if (!game.player) return;
+                                    int best = -1;
+                                    if (dir == 0) {
+                                        if (startPos >= 0 && startPos < 10 && game.player->STOREDATA.get(startPos).num() > kDrawing::INITDATA) {
+                                            best = startPos;
+                                        } else {
+                                            for (int i = 0; i < 10; ++i) {
+                                                if (game.player->STOREDATA.get(i).num() > kDrawing::INITDATA) { best = i; break; }
+                                            }
+                                        }
+                                    } else if (dir > 0) {
+                                        for (int offset = 1; offset < 10; ++offset) {
+                                            int idx = (startPos + offset) % 10;
+                                            if (game.player->STOREDATA.get(idx).num() > kDrawing::INITDATA) { best = idx; break; }
+                                        }
+                                    } else {
+                                        for (int offset = 1; offset < 10; ++offset) {
+                                            int idx = (startPos - offset + 10) % 10;
+                                            if (game.player->STOREDATA.get(idx).num() > kDrawing::INITDATA) { best = idx; break; }
+                                        }
+                                    }
+                                    if (best != -1) {
+                                        game.nStoreItemSelectPos = best;
+                                        game.bStoreItemSelect = true;
+                                        game.bInvenItemSelect = false;
+                                        game.nPigDialogStep = 1;
+                                        game.nPigDialogFrame = 0;
+                                        pd.storeFocus = 0;
+                                        pd.cursor = false;
+                                        game.lib->playEffect(15);
+                                    }
+                                };
+
                                 switch (b) {
+                                    case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+                                        if (pd.storeFocus == 0) {
+                                            autoSelectStore(game.nStoreItemSelectPos, -1);
+                                        } else {
+                                            autoSelectInven(game.nInvenItemSelectPos, -1);
+                                        }
+                                        break;
+                                    case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+                                        if (pd.storeFocus == 0) {
+                                            autoSelectStore(game.nStoreItemSelectPos, 1);
+                                        } else {
+                                            autoSelectInven(game.nInvenItemSelectPos, 1);
+                                        }
+                                        break;
+                                    case SDL_CONTROLLER_BUTTON_DPAD_UP:
+                                        pd.storeFocus = 0;
+                                        autoSelectStore(game.nStoreItemSelectPos >= 0 ? game.nStoreItemSelectPos : 0, 0);
+                                        break;
+                                    case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+                                        pd.storeFocus = 1;
+                                        autoSelectInven(game.nInvenItemSelectPos >= 0 ? game.nInvenItemSelectPos : 0, 0);
+                                        break;
+                                    case SDL_CONTROLLER_BUTTON_X:
+                                    case SDL_CONTROLLER_BUTTON_A:
+                                        if (game.bInvenItemSelect && game.nInvenItemSelectPos >= 0 &&
+                                            game.player && game.player->INVENDATA.get(game.nInvenItemSelectPos).num() > kDrawing::INITDATA) {
+                                            // Quick Sell item from inventory
+                                            if (!game.bBuySellBtn) {
+                                                game.bDrawSortingList = false;
+                                                game.lib->playEffect(16);
+                                                game.bBuySellBtn = true;
+                                                game.nPigDialogStep = 0;
+                                                pd.lastSoldInvenPos = game.nInvenItemSelectPos;
+                                                pd.wasSellingInven = true;
+                                            }
+                                        } else if (game.bStoreItemSelect && game.nStoreItemSelectPos >= 0 &&
+                                                   game.player && game.player->STOREDATA.get(game.nStoreItemSelectPos).num() > kDrawing::INITDATA) {
+                                            // Quick Buy item from store
+                                            if (!game.bBuySellBtn) {
+                                                game.bDrawSortingList = false;
+                                                game.lib->playEffect(16);
+                                                game.bBuySellBtn = true;
+                                                game.nPigDialogStep = 0;
+                                            }
+                                        } else {
+                                            if (pd.storeFocus == 0) autoSelectStore(0, 0);
+                                            else autoSelectInven(0, 0);
+                                        }
+                                        break;
+                                    case SDL_CONTROLLER_BUTTON_Y:
+                                        // Quick Sort: sort mace then ring
+                                        if (game.ope) {
+                                            game.lib->playEffect(15);
+                                            game.ope->sortInven(kPlayer::SORTING_MACE);
+                                            game.ope->sortInven(kPlayer::SORTING_RING);
+                                            game.lib->saveFile(kDrawing::DB_SLOT, (as3::str(std::string("paladog_slot")) + as3::str(game.nGameSlot)));
+                                            game.lib->saveFile(kDrawing::DB_GAME, (as3::str(std::string("paladog_game")) + as3::str(game.nGameSlot)));
+                                            autoSelectInven(0, 0);
+                                        }
+                                        break;
                                     case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
                                         game.lib->playEffect(15);
                                         game.bUnitBtn = true;
@@ -624,12 +796,14 @@ int main(int argc, char** argv) {
                                         game.bEquipBtn = true;
                                         break;
                                     case SDL_CONTROLLER_BUTTON_B:
-                                        game.lib->playEffect(15);
-                                        game.nMainScene = 100;
-                                        break;
-                                    case SDL_CONTROLLER_BUTTON_A:
-                                        game.mouseDown(static_cast<int>(pd.cx), static_cast<int>(pd.cy));
-                                        pd.sentKey[b] = -2;
+                                        if (game.bInvenItemSelect || game.bStoreItemSelect) {
+                                            game.bInvenItemSelect = false;
+                                            game.bStoreItemSelect = false;
+                                            game.lib->playEffect(15);
+                                        } else {
+                                            game.lib->playEffect(15);
+                                            game.nMainScene = 100;
+                                        }
                                         break;
                                     default: break;
                                 }
@@ -706,7 +880,28 @@ int main(int argc, char** argv) {
                         if (game.nMainState == kDrawing::MAIN_GAME && game.nGameState == kDrawing::GAME_CINEMA) {
                             if (game.nGameScene == 0) {
                                 if (b == SDL_CONTROLLER_BUTTON_A || b == SDL_CONTROLLER_BUTTON_START || b == SDL_CONTROLLER_BUTTON_X) {
-                                    game.nGameFrame = 120;
+                                    if (game.player && game.player->nNowPlayChapter < 4) {
+                                        if (game.nGameFrame < 119) {
+                                            game.nGameFrame = 120;
+                                        } else {
+                                            game.bChapterClearSnd = false;
+                                            game.bEventSkipBtn = false;
+                                            game.bEventNextBtn = false;
+                                            game.nEventScene = 0;
+                                            game.nEventFrame = 0;
+                                            game.nEventSoundCount = 0;
+                                            ++game.nGameScene;
+                                            game.nDialogStep = 0;
+                                            game.lib->playEffect(15);
+                                            if (game.player->nNowPlayChapter == 3) {
+                                                game.lib->playMusic(kLibrary::MUSIC_TITLE, true);
+                                            } else {
+                                                game.lib->playMusic(kLibrary::MUSIC_STAGE, true);
+                                            }
+                                        }
+                                    } else {
+                                        ++game.nGameScene;
+                                    }
                                     break;
                                 }
                             } else if (game.nGameScene == 1) {
@@ -721,6 +916,16 @@ int main(int argc, char** argv) {
                                     game.lib->playEffect(15);
                                     break;
                                 }
+                            }
+                        }
+
+                        // --- 8b. Ad Screen (After chapter clear comic / ending) ---
+                        if (game.nMainState == kDrawing::MAIN_AD) {
+                            if (b == SDL_CONTROLLER_BUTTON_A || b == SDL_CONTROLLER_BUTTON_START ||
+                                b == SDL_CONTROLLER_BUTTON_X || b == SDL_CONTROLLER_BUTTON_B) {
+                                game.lib->playEffect(15);
+                                game.bOkBtn = true;
+                                break;
                             }
                         }
 
@@ -915,13 +1120,28 @@ int main(int argc, char** argv) {
                                 }
                             }
                         } else if (a == SDL_CONTROLLER_AXIS_TRIGGERLEFT || a == SDL_CONTROLLER_AXIS_TRIGGERRIGHT) {
-                            // L2/R2 scroll the camera (Q/E).
-                            const int i = a == SDL_CONTROLLER_AXIS_TRIGGERLEFT ? 0 : 1;
-                            const bool on = play && v > 16000;
-                            if (on != pd.trig[i]) {
-                                pd.trig[i] = on;
-                                if (on) game.keyDown(i ? 'E' : 'Q');
-                                else game.keyUp(i ? 'E' : 'Q');
+                            if (game.nMainState == kDrawing::MAIN_STAGESELECT && game.nMainScene == 300) {
+                                const int i = a == SDL_CONTROLLER_AXIS_TRIGGERLEFT ? 0 : 1;
+                                const bool on = v > 16000;
+                                if (on && !pd.trig[i]) {
+                                    pd.trig[i] = true;
+                                    if (game.player) {
+                                        if (i == 0) game.player->bInvenLeftArrowBtn = true;
+                                        else game.player->bInvenRightArrowBtn = true;
+                                        game.lib->playEffect(15);
+                                    }
+                                } else if (!on) {
+                                    pd.trig[i] = false;
+                                }
+                            } else {
+                                // L2/R2 scroll the camera (Q/E).
+                                const int i = a == SDL_CONTROLLER_AXIS_TRIGGERLEFT ? 0 : 1;
+                                const bool on = play && v > 16000;
+                                if (on != pd.trig[i]) {
+                                    pd.trig[i] = on;
+                                    if (on) game.keyDown(i ? 'E' : 'Q');
+                                    else game.keyUp(i ? 'E' : 'Q');
+                                }
                             }
                         }
                         break;
@@ -996,7 +1216,7 @@ int main(int argc, char** argv) {
                 };
 
                 const bool dpadNav = (game.nMainState == kDrawing::MAIN_GAME && game.nGameState == kDrawing::GAME_LEVELUP) ||
-                                     (game.nMainState == kDrawing::MAIN_STAGESELECT && game.nMainScene == 200);
+                                     (game.nMainState == kDrawing::MAIN_STAGESELECT && (game.nMainScene == 200 || game.nMainScene == 300));
                 const float dpadX = dpadNav ? 0.f : ((pd.btn[SDL_CONTROLLER_BUTTON_DPAD_RIGHT] ? 1.f : 0.f) -
                                                      (pd.btn[SDL_CONTROLLER_BUTTON_DPAD_LEFT] ? 1.f : 0.f));
                 const float dpadY = dpadNav ? 0.f : ((pd.btn[SDL_CONTROLLER_BUTTON_DPAD_DOWN] ? 1.f : 0.f) -
@@ -1046,6 +1266,59 @@ int main(int argc, char** argv) {
 
             game.runFrame(leak);
             text.endFrame();
+
+            // Store (Scene 300) auto-selection on enter & auto-pick next item after sell
+            static int prevMainState = -1;
+            static int prevMainScene = -1;
+            if (game.nMainState == kDrawing::MAIN_STAGESELECT && game.nMainScene == 300) {
+                // If just entered Store, auto-select first inventory item
+                if (prevMainState != game.nMainState || prevMainScene != game.nMainScene) {
+                    pd.storeFocus = 1;
+                    pd.cursor = false;
+                    pd.wasSellingInven = false;
+                    if (game.player) {
+                        for (int i = 0; i < kPlayer::INVENDATA_LEVELPOS; ++i) {
+                            if (game.player->INVENDATA.get(i).num() > kDrawing::INITDATA) {
+                                game.nInvenItemSelectPos = i;
+                                game.bInvenItemSelect = true;
+                                game.bStoreItemSelect = false;
+                                game.player->nInvenPosX = -(i / 9) * (74 * 9);
+                                if (game.player->nInvenPosX > kPlayer::INVEN_STARTPOS) game.player->nInvenPosX = kPlayer::INVEN_STARTPOS;
+                                if (game.player->nInvenPosX < -kPlayer::INVEN_ENDPOS) game.player->nInvenPosX = -kPlayer::INVEN_ENDPOS;
+                                game.nPigDialogStep = 1;
+                                game.nPigDialogFrame = 0;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // If an item was just sold, automatically select the next item
+                if (pd.wasSellingInven && !game.bBuySellBtn && game.player) {
+                    pd.wasSellingInven = false;
+                    int next = -1;
+                    for (int i = pd.lastSoldInvenPos; i < kPlayer::INVENDATA_LEVELPOS; ++i) {
+                        if (game.player->INVENDATA.get(i).num() > kDrawing::INITDATA) { next = i; break; }
+                    }
+                    if (next == -1) {
+                        for (int i = pd.lastSoldInvenPos - 1; i >= 0; --i) {
+                            if (game.player->INVENDATA.get(i).num() > kDrawing::INITDATA) { next = i; break; }
+                        }
+                    }
+                    if (next != -1) {
+                        game.nInvenItemSelectPos = next;
+                        game.bInvenItemSelect = true;
+                        game.bStoreItemSelect = false;
+                        game.player->nInvenPosX = -(next / 9) * (74 * 9);
+                        if (game.player->nInvenPosX > kPlayer::INVEN_STARTPOS) game.player->nInvenPosX = kPlayer::INVEN_STARTPOS;
+                        if (game.player->nInvenPosX < -kPlayer::INVEN_ENDPOS) game.player->nInvenPosX = -kPlayer::INVEN_ENDPOS;
+                        game.nPigDialogStep = 1;
+                        game.nPigDialogFrame = 0;
+                    }
+                }
+            }
+            prevMainState = game.nMainState;
+            prevMainScene = game.nMainScene;
 
             auto drawGlowingBorder = [&](int x, int y, int w, int h, uint32_t mainColor) {
                 const int t = 3;
@@ -1174,27 +1447,59 @@ int main(int argc, char** argv) {
 #if defined(PALADOG_LANG_EN)
                 game.lib->drawBorderString("PRESS [X] TO UPGRADE", 413, 252, 0x000000, 0xFFEA00, 100, kDrawing::TOP | kDrawing::HCENTER);
                 game.lib->drawBorderString("[B] BACK      [R1] SHOP", 380, 538, 0x000000, 0xFFFFFF, 100, kDrawing::TOP | kDrawing::HCENTER);
-                if (pd.cursor) gfx.drawCursor(static_cast<int>(pd.cx), static_cast<int>(pd.cy));
-            } else if (game.nMainState == kDrawing::MAIN_STAGESELECT && game.nMainScene == 300) {
-                // Store screen: draw L1 / R1 hints on top navigation buttons
-                game.lib->drawBorderString("[L1] UNITS", 78, 59, 0x000000, 0x00FFFF, 100, kDrawing::TOP | kDrawing::HCENTER);
-                game.lib->drawBorderString("[R1] HERO", 680, 59, 0x000000, 0x00FFFF, 100, kDrawing::TOP | kDrawing::HCENTER);
-                if (pd.cursor) gfx.drawCursor(static_cast<int>(pd.cx), static_cast<int>(pd.cy));
-            } else if (game.nMainState == kDrawing::MAIN_STAGESELECT && game.nMainScene == 400) {
-                // Hero Equip screen: draw L1 / R1 hints on top navigation buttons
-                game.lib->drawBorderString("[L1] SHOP", 78, 59, 0x000000, 0x00FFFF, 100, kDrawing::TOP | kDrawing::HCENTER);
-                game.lib->drawBorderString("[R1] STAGES", 680, 59, 0x000000, 0xFFEA00, 100, kDrawing::TOP | kDrawing::HCENTER);
 #else
                 game.lib->drawBorderString("BẤM [X] ĐỂ NÂNG CẤP", 413, 252, 0x000000, 0xFFEA00, 100, kDrawing::TOP | kDrawing::HCENTER);
                 game.lib->drawBorderString("[B] QUAY LẠI      [R1] CỬA HÀNG", 380, 538, 0x000000, 0xFFFFFF, 100, kDrawing::TOP | kDrawing::HCENTER);
+#endif
                 if (pd.cursor) gfx.drawCursor(static_cast<int>(pd.cx), static_cast<int>(pd.cy));
             } else if (game.nMainState == kDrawing::MAIN_STAGESELECT && game.nMainScene == 300) {
                 // Store screen: draw L1 / R1 hints on top navigation buttons
+#if defined(PALADOG_LANG_EN)
+                game.lib->drawBorderString("[L1] UNITS", 78, 59, 0x000000, 0x00FFFF, 100, kDrawing::TOP | kDrawing::HCENTER);
+                game.lib->drawBorderString("[R1] HERO", 680, 59, 0x000000, 0x00FFFF, 100, kDrawing::TOP | kDrawing::HCENTER);
+#else
                 game.lib->drawBorderString("[L1] QUÂN LÍNH", 78, 59, 0x000000, 0x00FFFF, 100, kDrawing::TOP | kDrawing::HCENTER);
                 game.lib->drawBorderString("[R1] ANH HÙNG", 680, 59, 0x000000, 0x00FFFF, 100, kDrawing::TOP | kDrawing::HCENTER);
+#endif
+
+                // Highlight selected item and action button
+                if (game.bInvenItemSelect && game.nInvenItemSelectPos >= 0) {
+                    if (game.player) {
+                        int ix = game.player->nInvenPosX + 46 + game.nInvenItemSelectPos * 74;
+                        if (ix >= 20 && ix + 74 <= 740) {
+                            drawGlowingBorder(ix, 482, 74, 88, 0xFFEA00);
+                        }
+                    }
+                    drawGlowingBorder(581, 231, 130, 58, 0xFF3333);
+#if defined(PALADOG_LANG_EN)
+                    game.lib->drawBorderString("[X] SELL", 646, 204, 0x000000, 0xFF5555, 100, kDrawing::TOP | kDrawing::HCENTER);
+#else
+                    game.lib->drawBorderString("[X] BÁN", 646, 204, 0x000000, 0xFF5555, 100, kDrawing::TOP | kDrawing::HCENTER);
+#endif
+                } else if (game.bStoreItemSelect && game.nStoreItemSelectPos >= 0) {
+                    int sx = 18 + game.nStoreItemSelectPos * 74;
+                    drawGlowingBorder(sx - 2, 309 - 2, 60, 60, 0x00E5FF);
+                    drawGlowingBorder(581, 231, 130, 58, 0x00FF66);
+#if defined(PALADOG_LANG_EN)
+                    game.lib->drawBorderString("[X] BUY", 646, 204, 0x000000, 0x00FF66, 100, kDrawing::TOP | kDrawing::HCENTER);
+#else
+                    game.lib->drawBorderString("[X] MUA", 646, 204, 0x000000, 0x00FF66, 100, kDrawing::TOP | kDrawing::HCENTER);
+#endif
+                }
+
+                // Control hints bar in Store
+#if defined(PALADOG_LANG_EN)
+                game.lib->drawBorderString("D-PAD: Select   [X]: Sell/Buy   [Y]: Sort   [B]: Back", 380, 435, 0x000000, 0xFFEA00, 100, kDrawing::TOP | kDrawing::HCENTER);
+#else
+                game.lib->drawBorderString("D-PAD: Chọn   [X]: Bán/Mua   [Y]: Sắp xếp   [B]: Thoát", 380, 435, 0x000000, 0xFFEA00, 100, kDrawing::TOP | kDrawing::HCENTER);
+#endif
                 if (pd.cursor) gfx.drawCursor(static_cast<int>(pd.cx), static_cast<int>(pd.cy));
             } else if (game.nMainState == kDrawing::MAIN_STAGESELECT && game.nMainScene == 400) {
                 // Hero Equip screen: draw L1 / R1 hints on top navigation buttons
+#if defined(PALADOG_LANG_EN)
+                game.lib->drawBorderString("[L1] SHOP", 78, 59, 0x000000, 0x00FFFF, 100, kDrawing::TOP | kDrawing::HCENTER);
+                game.lib->drawBorderString("[R1] STAGES", 680, 59, 0x000000, 0xFFEA00, 100, kDrawing::TOP | kDrawing::HCENTER);
+#else
                 game.lib->drawBorderString("[L1] CỬA HÀNG", 78, 59, 0x000000, 0x00FFFF, 100, kDrawing::TOP | kDrawing::HCENTER);
                 game.lib->drawBorderString("[R1] CHỌN ẢI", 680, 59, 0x000000, 0xFFEA00, 100, kDrawing::TOP | kDrawing::HCENTER);
 #endif
@@ -1204,6 +1509,30 @@ int main(int argc, char** argv) {
                 const int bx = 460, by = 437, bw = 180, bh = 68;
                 drawGlowingBorder(bx, by, bw, bh, 0xFFEA00);
                 if (pd.cursor) gfx.drawCursor(static_cast<int>(pd.cx), static_cast<int>(pd.cy));
+            } else if (game.nMainState == kDrawing::MAIN_GAME && game.nGameState == kDrawing::GAME_CINEMA && game.nGameScene == 0) {
+                if (game.nGameFrame >= 119) {
+#if defined(PALADOG_LANG_EN)
+                    game.lib->drawBorderString("[A] CONTINUE", 380, 520, 0x000000, 0xFFEA00, 100, kDrawing::TOP | kDrawing::HCENTER);
+#else
+                    game.lib->drawBorderString("[A] TIẾP TỤC", 380, 520, 0x000000, 0xFFEA00, 100, kDrawing::TOP | kDrawing::HCENTER);
+#endif
+                }
+            } else if (game.nMainState == kDrawing::MAIN_GAME && game.nGameState == kDrawing::GAME_CINEMA && game.nGameScene == 1) {
+#if defined(PALADOG_LANG_EN)
+                game.lib->drawBorderString("[B] SKIP", 87, 490, 0x000000, 0xFFEA00, 100, kDrawing::TOP | kDrawing::HCENTER);
+                game.lib->drawBorderString("[A] NEXT", 674, 490, 0x000000, 0x00FFFF, 100, kDrawing::TOP | kDrawing::HCENTER);
+#else
+                game.lib->drawBorderString("[B] BỎ QUA", 87, 490, 0x000000, 0xFFEA00, 100, kDrawing::TOP | kDrawing::HCENTER);
+                game.lib->drawBorderString("[A] TIẾP TỤC", 674, 490, 0x000000, 0x00FFFF, 100, kDrawing::TOP | kDrawing::HCENTER);
+#endif
+            } else if (game.nMainState == kDrawing::MAIN_AD) {
+                const int bx = 627, by = 11, bw = 124, bh = 51;
+                drawGlowingBorder(bx, by, bw, bh, 0xFFEA00);
+#if defined(PALADOG_LANG_EN)
+                game.lib->drawBorderString("[A] CONTINUE", bx + bw / 2, by + bh + 4, 0x000000, 0xFFEA00, 100, kDrawing::TOP | kDrawing::HCENTER);
+#else
+                game.lib->drawBorderString("[A] TIẾP TỤC", bx + bw / 2, by + bh + 4, 0x000000, 0xFFEA00, 100, kDrawing::TOP | kDrawing::HCENTER);
+#endif
             } else if (game.nMainState == kDrawing::MAIN_GAME && game.nGameState == kDrawing::GAME_OVER && game.nGameScene == 2) {
                 // Highlight retry button
                 const int bx = 544, by = 494, bw = 204, bh = 65;

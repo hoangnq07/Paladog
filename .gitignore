@@ -1,6 +1,7 @@
 # Build outputs
 native_port/build/
 native_port/build-arm64/
+native_port/build-arm64-en/
 native_port/dist/
 *.exe
 *.o
@@ -23,7 +24,11 @@ __pycache__/
 native_port/shots/*
 !native_port/shots/cover.png
 !native_port/shots/screenshot.png
+test_*.png
 native_port/scratch/
+Paladog_*_Folder/
+extracted/test_*/
+extracted/verify_*/
 extracted/temp_inspect/
 extracted/orig_scripts/
 extracted/subs/

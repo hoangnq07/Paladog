@@ -30,11 +30,11 @@ CÀI ĐẶT
      - [R1]: Chuyển sang Cửa Hàng
 
   4. Màn hình Cửa Hàng (Store) - Bán / Mua không cần chuột:
-     - Ô đồ đang chọn có VIỀN VÀNG (túi đồ) hoặc VIỀN XANH (kệ shop) PHÁT SÁNG
+     - Ô đồ đang chọn có khung xanh nổi bật mặc định của game
      - D-Pad ◄ ►: Duyệt chọn từng món đồ (tự động cuộn trang túi đồ mượt mà)
      - D-Pad ▲: Chuyển chọn lên kệ hàng Cửa Hàng
      - D-Pad ▼: Chuyển chọn xuống Túi đồ của bạn
-     - [X] hoặc [A]: BÁN hoặc MUA nhanh món đồ đang chọn (bấm [X] liên tục để bán dọn túi cực nhanh)
+     - [A]: BÁN (khi ở túi đồ) hoặc MUA (khi ở kệ shop) món đồ đang chọn (bấm [A] liên tục để dọn sạch túi cực nhanh)
      - [Y]: Tự động gom & Sắp xếp túi đồ (Sort)
      - L2 / R2: Lật trang trước / sau trong túi đồ
      - [L1] / [R1]: Chuyển sang Nâng Cấp Lính / Trang Bị Anh Hùng

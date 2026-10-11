@@ -749,7 +749,6 @@ int main(int argc, char** argv) {
                                         pd.storeFocus = 1;
                                         autoSelectInven(game.nInvenItemSelectPos >= 0 ? game.nInvenItemSelectPos : 0, 0);
                                         break;
-                                    case SDL_CONTROLLER_BUTTON_X:
                                     case SDL_CONTROLLER_BUTTON_A:
                                         if (game.bInvenItemSelect && game.nInvenItemSelectPos >= 0 &&
                                             game.player && game.player->INVENDATA.get(game.nInvenItemSelectPos).num() > kDrawing::INITDATA) {
@@ -1453,46 +1452,8 @@ int main(int argc, char** argv) {
 #endif
                 if (pd.cursor) gfx.drawCursor(static_cast<int>(pd.cx), static_cast<int>(pd.cy));
             } else if (game.nMainState == kDrawing::MAIN_STAGESELECT && game.nMainScene == 300) {
-                // Store screen: draw L1 / R1 hints on top navigation buttons
-#if defined(PALADOG_LANG_EN)
-                game.lib->drawBorderString("[L1] UNITS", 78, 59, 0x000000, 0x00FFFF, 100, kDrawing::TOP | kDrawing::HCENTER);
-                game.lib->drawBorderString("[R1] HERO", 680, 59, 0x000000, 0x00FFFF, 100, kDrawing::TOP | kDrawing::HCENTER);
-#else
-                game.lib->drawBorderString("[L1] QUÂN LÍNH", 78, 59, 0x000000, 0x00FFFF, 100, kDrawing::TOP | kDrawing::HCENTER);
-                game.lib->drawBorderString("[R1] ANH HÙNG", 680, 59, 0x000000, 0x00FFFF, 100, kDrawing::TOP | kDrawing::HCENTER);
-#endif
-
-                // Highlight selected item and action button
-                if (game.bInvenItemSelect && game.nInvenItemSelectPos >= 0) {
-                    if (game.player) {
-                        int ix = game.player->nInvenPosX + 46 + game.nInvenItemSelectPos * 74;
-                        if (ix >= 20 && ix + 74 <= 740) {
-                            drawGlowingBorder(ix, 482, 74, 88, 0xFFEA00);
-                        }
-                    }
-                    drawGlowingBorder(581, 231, 130, 58, 0xFF3333);
-#if defined(PALADOG_LANG_EN)
-                    game.lib->drawBorderString("[X] SELL", 646, 204, 0x000000, 0xFF5555, 100, kDrawing::TOP | kDrawing::HCENTER);
-#else
-                    game.lib->drawBorderString("[X] BÁN", 646, 204, 0x000000, 0xFF5555, 100, kDrawing::TOP | kDrawing::HCENTER);
-#endif
-                } else if (game.bStoreItemSelect && game.nStoreItemSelectPos >= 0) {
-                    int sx = 18 + game.nStoreItemSelectPos * 74;
-                    drawGlowingBorder(sx - 2, 309 - 2, 60, 60, 0x00E5FF);
-                    drawGlowingBorder(581, 231, 130, 58, 0x00FF66);
-#if defined(PALADOG_LANG_EN)
-                    game.lib->drawBorderString("[X] BUY", 646, 204, 0x000000, 0x00FF66, 100, kDrawing::TOP | kDrawing::HCENTER);
-#else
-                    game.lib->drawBorderString("[X] MUA", 646, 204, 0x000000, 0x00FF66, 100, kDrawing::TOP | kDrawing::HCENTER);
-#endif
-                }
-
-                // Control hints bar in Store
-#if defined(PALADOG_LANG_EN)
-                game.lib->drawBorderString("D-PAD: Select   [X]: Sell/Buy   [Y]: Sort   [B]: Back", 380, 435, 0x000000, 0xFFEA00, 100, kDrawing::TOP | kDrawing::HCENTER);
-#else
-                game.lib->drawBorderString("D-PAD: Chọn   [X]: Bán/Mua   [Y]: Sắp xếp   [B]: Thoát", 380, 435, 0x000000, 0xFFEA00, 100, kDrawing::TOP | kDrawing::HCENTER);
-#endif
+                // Store screen: native game already displays blue highlight box on selected item.
+                // Keep UI clean without custom borders or hints that obscure gold / price UI.
                 if (pd.cursor) gfx.drawCursor(static_cast<int>(pd.cx), static_cast<int>(pd.cy));
             } else if (game.nMainState == kDrawing::MAIN_STAGESELECT && game.nMainScene == 400) {
                 // Hero Equip screen: draw L1 / R1 hints on top navigation buttons
